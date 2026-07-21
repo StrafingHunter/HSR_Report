@@ -4,13 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ASTRAL — HSR Live-Ops Briefing · v1.0–v4.4</title>
-<meta name="description" content="ASTRAL — a live-ops briefing on Honkai: Star Rail v1.0–v4.4: three years of revenue and sentiment telemetry, with sourced figures and operational recommendations.">
-<meta property="og:title" content="ASTRAL — HSR Live-Ops Briefing · v1.0–v4.4">
-<meta property="og:description" content="Three years of Honkai: Star Rail revenue and sentiment telemetry, read together — 29 patches, sourced figures, operational recommendations.">
-<meta property="og:type" content="website">
-<!-- Progressive enhancement flag: app-shell behaviour (fixed panels, hidden-until-reveal,
-     landing gate) only activates when JS runs. Without JS the page is a plain scrollable document. -->
-<script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -34,23 +27,21 @@
     --mono:'IBM Plex Mono',monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;color:var(--foam);font-family:var(--body)}
-  html.js,html.js body{overflow:hidden}
-  /* nebula rebuilt as pure CSS gradients — no external image dependency */
+  html,body{height:100%;color:var(--foam);font-family:var(--body);overflow:hidden}
   body{background:
     radial-gradient(52% 40% at 18% 22%, rgba(75,159,232,.14), transparent 70%),
     radial-gradient(45% 38% at 82% 12%, rgba(227,121,159,.10), transparent 70%),
     radial-gradient(60% 50% at 70% 85%, rgba(30,74,138,.22), transparent 70%),
     linear-gradient(180deg,#0b1226,var(--ink) 60%),
-    var(--ink)}
+    var(--ink);
+    background-attachment:fixed}
   button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--lume);color:var(--ink)}
   .enter-btn:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 
   /* ---------- PRELOADER ---------- */
-  #preloader{position:fixed;inset:0;z-index:100;background:var(--ink);display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease}
-  .js #preloader{display:flex}
+  #preloader{position:fixed;inset:0;z-index:100;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease}
   #preloader.done{opacity:0;pointer-events:none}
   .pre-mark{font-family:var(--display);font-weight:900;font-size:clamp(20px,3vw,30px);letter-spacing:.32em;color:var(--foam)}
   .pre-mark span{color:var(--lume)}
@@ -67,12 +58,12 @@
   @keyframes wipeUp{0%{transform:translateY(101%)}45%,55%{transform:translateY(0)}100%{transform:translateY(-101%)}}
 
   /* ---------- LANDING GATE ---------- */
-  #landing{position:relative;min-height:100vh;z-index:10;display:flex;flex-direction:column;justify-content:space-between;padding:28px clamp(20px,5vw,64px);background:
-    radial-gradient(120% 90% at 50% -20%, rgba(75,159,232,.16), transparent 55%),
-    radial-gradient(42% 36% at 80% 28%, rgba(227,121,159,.10), transparent 70%),
-    linear-gradient(180deg, rgba(22,34,74,.68) 0%, rgba(16,28,60,.72) 45%, rgba(7,10,22,.86) 100%);
-    transition:opacity .5s ease}
-  .js #landing{position:fixed;inset:0;overflow-y:auto}
+  #landing{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:space-between;padding:28px clamp(20px,5vw,64px);background:
+    radial-gradient(52% 40% at 18% 22%, rgba(75,159,232,.16), transparent 70%),
+    radial-gradient(45% 38% at 82% 12%, rgba(227,121,159,.12), transparent 70%),
+    radial-gradient(60% 50% at 70% 85%, rgba(30,74,138,.24), transparent 70%),
+    linear-gradient(180deg, rgba(11,18,38,.55) 0%, rgba(7,10,22,.62) 100%);
+    transition:opacity .5s ease;overflow-y:auto}
   #landing.hidden{opacity:0;pointer-events:none}
   .gate-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--foam-dim);gap:14px;flex-wrap:wrap}
   .gate-top .warn{color:var(--amber);border:1px solid rgba(255,180,84,.4);padding:5px 10px;letter-spacing:.14em}
@@ -83,7 +74,7 @@
   .gate-tag{font-weight:300;font-size:clamp(14px,1.6vw,18px);letter-spacing:.06em;line-height:1.7;color:var(--foam-dim);max-width:640px}
   .gate-tag b{color:var(--foam);font-weight:500}
   .gate-tag .dn{color:var(--rose)}
-  .enter-btn{display:inline-block;text-align:center;margin-top:12px;font-family:var(--display);font-weight:500;font-size:clamp(13px,1.4vw,16px);letter-spacing:.24em;padding:18px 46px;border:1px solid var(--lume);color:var(--lume);position:relative;overflow:hidden;transition:color .3s ease}
+  .enter-btn{margin-top:12px;font-family:var(--display);font-weight:500;font-size:clamp(13px,1.4vw,16px);letter-spacing:.24em;padding:18px 46px;border:1px solid var(--lume);color:var(--lume);position:relative;overflow:hidden;transition:color .3s ease}
   .enter-btn::before{content:"";position:absolute;inset:0;background:var(--lume);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.76,0,.24,1);z-index:-1}
   .enter-btn:hover{color:var(--ink)}
   .enter-btn:hover::before{transform:scaleX(1)}
@@ -98,15 +89,12 @@
   .gate-meta{display:flex;gap:22px;align-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--foam-dim);flex-wrap:wrap;justify-content:center;text-align:center}
 
   /* ---------- MAIN SHELL ---------- */
-  #main{position:relative;z-index:5;transition:opacity .5s ease}
-  .js #main{position:fixed;inset:0;opacity:0;pointer-events:none}
-  .js #main.live{opacity:1;pointer-events:auto}
-  #scroller{scroll-behavior:smooth}
-  .js #scroller{height:100%;overflow-y:auto}
+  #main{position:fixed;inset:0;z-index:5;opacity:0;pointer-events:none;transition:opacity .5s ease}
+  #main.live{opacity:1;pointer-events:auto}
+  #scroller{height:100%;overflow-y:auto;scroll-behavior:smooth}
 
   /* nav */
-  #topnav{position:sticky;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:34px;padding:0 clamp(20px,4vw,48px);height:64px;background:linear-gradient(180deg,rgba(4,16,26,.94),rgba(4,16,26,.55));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid rgba(22,57,74,.6)}
-  .js #topnav{position:fixed}
+  #topnav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:34px;padding:0 clamp(20px,4vw,48px);height:64px;background:linear-gradient(180deg,rgba(4,16,26,.94),rgba(4,16,26,.55));backdrop-filter:blur(6px);border-bottom:1px solid rgba(22,57,74,.6)}
   .nav-logo{font-family:var(--display);font-weight:900;font-size:14px;letter-spacing:.2em;white-space:nowrap}
   .nav-logo em{font-style:normal;color:var(--lume)}
   .nav-links{display:flex;gap:24px;font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--foam-dim)}
@@ -120,18 +108,17 @@
   @keyframes eq{0%,100%{height:4px}50%{height:14px}}
   .nav-dl{font-family:var(--display);font-size:11px;font-weight:500;letter-spacing:.2em;color:var(--ink);background:var(--lume);padding:10px 20px;transition:background .2s}
   .nav-dl:hover{background:var(--foam)}
+  .nav-xlink{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--foam-dim);border-bottom:1px solid var(--edge-strong);padding:6px 2px;transition:color .2s,border-color .2s;white-space:nowrap}
+  .nav-xlink:hover{color:var(--foam);border-color:var(--lume)}
 
   /* depth gauge — signature element */
-  #gauge{position:fixed;right:clamp(10px,2.2vw,30px);top:50%;transform:translateY(-50%);z-index:20;display:none;flex-direction:column;align-items:center;gap:14px;font-family:var(--mono)}
-  .js #gauge{display:flex}
+  #gauge{position:fixed;right:clamp(10px,2.2vw,30px);top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:14px;font-family:var(--mono)}
   #depth-read{writing-mode:vertical-rl;font-size:11px;letter-spacing:.3em;color:var(--lume)}
   .gauge-track{width:1px;height:160px;background:#263562;position:relative}
   .gauge-track i{position:absolute;left:-1px;top:0;width:3px;background:var(--lume);height:0;box-shadow:0 0 8px var(--lume)}
-  .gauge-dots{display:flex;flex-direction:column}
-  /* 24px hit area (touch target), visual dot stays 8px */
-  .gauge-dots button{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-  .gauge-dots button::after{content:"";width:8px;height:8px;border-radius:50%;border:1px solid var(--edge-strong);transition:background .2s,border-color .2s}
-  .gauge-dots button.on::after{background:var(--lume);border-color:var(--lume)}
+  .gauge-dots{display:flex;flex-direction:column;gap:10px}
+  .gauge-dots button{width:8px;height:8px;border-radius:50%;border:1px solid var(--edge-strong);transition:background .2s,border-color .2s}
+  .gauge-dots button.on{background:var(--lume);border-color:var(--lume)}
   .zone-label{writing-mode:vertical-rl;font-size:9px;letter-spacing:.4em;color:var(--foam-dim)}
 
   /* sections */
@@ -146,15 +133,10 @@
   .ref{font-family:var(--mono);font-size:10px;color:#4f96a8;letter-spacing:.04em}
   .mono{font-family:var(--mono)}
 
-  /* depth-graded section backgrounds — translucent so the nebula shows through,
-     alpha deepening with descent so "deeper = darker" still reads */
-  #s-hero{background:linear-gradient(180deg,rgba(22,34,74,.62),rgba(16,28,60,.74));padding-top:130px}
-  #s-rail{background:linear-gradient(180deg,rgba(16,28,60,.74),rgba(13,24,48,.80))}
-  #s-tele{background:linear-gradient(180deg,rgba(13,24,48,.80),rgba(11,20,40,.85))}
-  #s-patch{background:linear-gradient(180deg,rgba(11,20,40,.85),rgba(10,16,36,.89))}
-  #s-eras{background:linear-gradient(180deg,rgba(10,16,36,.89),rgba(8,12,28,.92))}
-  #s-watch{background:linear-gradient(180deg,rgba(8,12,28,.92),rgba(6,10,22,.95))}
-  #s-refs{background:linear-gradient(180deg,rgba(6,10,22,.95),rgba(4,6,15,.985))}
+  /* sections transparent — the fixed glow background + starfield show through;
+     dense content carries its own card backgrounds for readability */
+  #s-hero{background:transparent;padding-top:130px}
+  #s-rail,#s-tele,#s-patch,#s-eras,#s-watch,#s-refs{background:transparent}
 
   /* ---- HERO ---- */
   .hero-title{font-family:var(--display);font-weight:900;font-size:clamp(30px,5vw,64px);letter-spacing:.03em;line-height:1.05;margin:8px 0 20px}
@@ -218,7 +200,7 @@
 
   /* ---- TELEMETRY (bars + milestones + engagement) ---- */
   .tele-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:26px;align-items:stretch}
-  .chart{border:1px solid var(--edge);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:26px 24px 18px;display:flex;flex-direction:column}
+  .chart{border:1px solid var(--edge);background:var(--card);backdrop-filter:blur(4px);padding:26px 24px 18px;display:flex;flex-direction:column}
   .chart h3,.mscard h3{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--foam-dim);text-transform:uppercase;margin-bottom:20px}
   .bars{display:flex;align-items:flex-end;gap:clamp(8px,2vw,22px);height:210px;padding-top:8px;flex:1}
   .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
@@ -229,7 +211,7 @@
   .bar .val.low{color:var(--rose)}
   .bar .lab{font-family:var(--mono);font-size:9.5px;color:var(--foam-dim);margin-top:10px;text-align:center;white-space:nowrap}
   .chart-note{font-size:11.5px;color:var(--faint);margin-top:16px;border-top:1px solid var(--edge);padding-top:12px;line-height:1.7}
-  .mscard{border:1px solid var(--edge);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:26px 24px}
+  .mscard{border:1px solid var(--edge);background:var(--card);backdrop-filter:blur(4px);padding:26px 24px}
   .ms{padding:14px 0;border-top:1px solid var(--edge);display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
   .ms:first-of-type{border-top:none;padding-top:0}
   .ms .when{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--lume);min-width:150px}
@@ -246,7 +228,7 @@
   .chip{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;border:1px solid var(--edge-strong);color:var(--foam-dim);transition:all .2s ease}
   .chip:hover{color:var(--foam);border-color:var(--lume)}
   .chip[aria-pressed="true"]{background:var(--lume);color:var(--ink);border-color:var(--lume);font-weight:700}
-  .tablecard{border:1px solid var(--edge);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow:hidden}
+  .tablecard{border:1px solid var(--edge);background:var(--card);backdrop-filter:blur(4px);overflow:hidden}
   .tscroll{overflow-x:auto;max-height:66vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--edge-strong) transparent}
   table{border-collapse:collapse;width:100%;min-width:720px}
   th,td{text-align:left;padding:12px 15px;border-bottom:1px solid var(--edge);vertical-align:top;font-size:13.5px;font-weight:300}
@@ -287,7 +269,7 @@
   .hyp{color:var(--faint);font-style:italic}
 
   /* sentiment case */
-  .case{margin-top:44px;border:1px solid var(--edge-strong);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow:hidden}
+  .case{margin-top:44px;border:1px solid var(--edge-strong);background:var(--card);backdrop-filter:blur(4px);overflow:hidden}
   .case-head{padding:20px 22px;border-bottom:1px solid var(--edge);display:flex;flex-wrap:wrap;align-items:baseline;gap:12px}
   .case-head .v{font-family:var(--display);font-weight:700;color:var(--rose);font-size:17px}
   .case-head .t{font-weight:500;letter-spacing:.04em}
@@ -322,12 +304,8 @@
   .to-top{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--foam-dim);border:1px solid var(--edge);padding:12px 26px;transition:color .2s,border-color .2s}
   .to-top:hover{color:var(--lume);border-color:var(--lume)}
 
-  .refjump{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;transition:color .15s,border-color .15s;cursor:pointer}
-  .refjump:hover,.refjump:focus-visible{color:var(--lume);border-bottom-color:var(--lume)}
-  .refs .r{scroll-margin-top:88px}
-  .refs .r:target{background:rgba(75,159,232,.10);outline:1px solid var(--edge-strong);padding:6px 10px;margin-left:-10px;border-radius:4px}
-  /* reveal — hidden state only applies when JS is running to add .in back */
-  .js .reveal{opacity:0;transform:translateY(16px)}
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(16px)}
   .reveal.in{opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease}
 
   @media (max-width:920px){
@@ -350,23 +328,23 @@
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
     #scroller{scroll-behavior:auto}
-    .reveal,.js .reveal{opacity:1;transform:none}
+    .reveal{opacity:1;transform:none}
   }
 </style>
 </head>
 <body>
 
-<!-- Background music: add src="your-own-hosted-track.mp3" to enable the BGM toggle.
-     With no src, the toggle hides itself. Do not hotlink third-party CDN assets. -->
-<audio id="bgm-audio" loop preload="none"></audio>
+<!-- Background music: streamed from the HoYoverse CDN. Nothing downloads until played.
+     Swap the src for any direct audio URL to use your own track. -->
+<audio id="bgm-audio" src="https://webstatic.hoyoverse.com/upload/op-public/2022/04/21/f18cf63753fcf8b2769752f627ec44e6_12947279472694686.mp3" loop preload="none"></audio>
 
 <canvas id="sea"></canvas>
 
 <!-- PRELOADER -->
-<div id="preloader" role="status" aria-label="Loading briefing">
-  <div class="pre-mark" aria-hidden="true">AST<span>RAL</span></div>
-  <div class="pre-bar" aria-hidden="true"><i id="pre-fill"></i></div>
-  <div class="pre-pct" id="pre-pct" aria-hidden="true">LOADING BRIEFING — 0%</div>
+<div id="preloader" role="status" aria-label="Loading">
+  <div class="pre-mark">AST<span>RAL</span></div>
+  <div class="pre-bar"><i id="pre-fill"></i></div>
+  <div class="pre-pct" id="pre-pct">LOADING BRIEFING — 0%</div>
 </div>
 
 <!-- PAGE WIPE -->
@@ -381,17 +359,17 @@
 
   <div class="gate-mid">
     <div class="gate-eyebrow">Honkai: Star Rail · v1.0 – v4.4 · 29 patches</div>
-    <p class="gate-logo">AST<em>RAL</em></p>
+    <h1 class="gate-logo">AST<em>RAL</em></h1>
     <p class="gate-tag">Three years of revenue and sentiment telemetry, read together. A <b>$209M launch peak</b>, a <b>$870.9M plateau year</b>, and a <span class="dn">sustained decline</span> through 2025–26 — with each observation paired to a candidate cause and an operational response.</p>
-    <a class="enter-btn" id="enter" href="#s-hero">OPEN BRIEFING</a>
+    <button class="enter-btn" id="enter">OPEN BRIEFING</button>
   </div>
 
   <div class="gate-bottom">
     <div class="gate-stats">
-      <div class="gstat"><small>Launch · first 30 days</small><b>$132.3M</b><i>net · ~$245M gross <a class="refjump" href="#ref-r1">[R1]</a></i></div>
-      <div class="gstat"><small>Highest month</small><b>$209.1M</b><i>May 2023 <a class="refjump" href="#ref-r15">[R15]</a></i></div>
-      <div class="gstat"><small>Calendar 2024 · mobile</small><b>$870.9M</b><i>12th globally <a class="refjump" href="#ref-r2">[R2]</a></i></div>
-      <div class="gstat"><small>Latest tracked month</small><b class="dn">$28.4M</b><i>Jun 2026 · −27% MoM <a class="refjump" href="#ref-r3">[R3]</a></i></div>
+      <div class="gstat"><small>Launch · first 30 days</small><b>$132.3M</b><i>net · ~$245M gross [R1]</i></div>
+      <div class="gstat"><small>Highest month</small><b>$209.1M</b><i>May 2023 [R15]</i></div>
+      <div class="gstat"><small>Calendar 2024 · mobile</small><b>$870.9M</b><i>12th globally [R2]</i></div>
+      <div class="gstat"><small>Latest tracked month</small><b class="dn">$28.4M</b><i>Jun 2026 · −27% MoM [R3]</i></div>
     </div>
     <div class="gate-meta">
       <span>COMPILED 21 JUL 2026</span>
@@ -414,13 +392,14 @@
       <button data-go="s-watch">KPIS</button>
     </div>
     <div class="nav-right">
+      <a class="nav-xlink" href="hsr-live-service-analysis.html" title="Open the full written report">FULL REPORT ↗</a>
       <button id="bgm" aria-label="Toggle background drone" title="BGM"><i></i><i></i><i></i></button>
       <button class="nav-dl" data-go="s-refs">SOURCES</button>
     </div>
   </nav>
 
-  <nav id="gauge" aria-label="Section navigation">
-    <span class="zone-label" id="zone-label" aria-hidden="true">ASTRAL EXPRESS</span>
+  <div id="gauge" aria-hidden="true">
+    <span class="zone-label" id="zone-label">ASTRAL EXPRESS</span>
     <div class="gauge-track"><i id="gauge-fill"></i></div>
     <div class="gauge-dots" id="gauge-dots">
       <button data-go="s-hero" class="on" aria-label="Brief"></button>
@@ -431,8 +410,8 @@
       <button data-go="s-watch" aria-label="KPIs"></button>
       <button data-go="s-refs" aria-label="References"></button>
     </div>
-    <span id="depth-read" aria-hidden="true">v1.0</span>
-  </nav>
+    <span id="depth-read">v1.0</span>
+  </div>
 
   <div id="scroller">
 
@@ -442,8 +421,7 @@
         <div class="sec-idx">01 — OVERVIEW</div>
         <div class="eyebrow warm">Revenue · Sentiment · Operations</div>
         <h1 class="hero-title">REVENUE, SENTIMENT,<br>AND <em>WHAT TO DO ABOUT IT.</em></h1>
-        <p class="thesis">The data suggests a common gacha pattern: a large launch peak, a high 2024 plateau, and a sustained <span class="dn">decline</span> through 2025–26, with temporary recoveries around anniversaries and collaborations. Player sentiment moved on a separate track — driven less by generosity than by <b>perceived roster balance and story pacing</b>.</p>
-        <p class="thesis" style="margin-top:14px">A note on what this is built from, because it shapes how much weight each claim can bear: the inputs are third-party mobile revenue estimates, public sentiment, and HoYoverse's own announcements. That's enough to describe what happened and to form <span class="up">hypotheses</span> about why — not to prescribe fixes with confidence. Observations here are stated plainly; causes are flagged as guesses of varying quality.</p>
+        <p class="thesis">The data suggests a common gacha pattern: a large launch peak, a high 2024 plateau, and a sustained <span class="dn">decline</span> through 2025–26, with temporary recoveries around anniversaries and collaborations. Player sentiment moved on a separate track — driven less by generosity than by <b>perceived roster balance and story pacing</b>. This brief pairs each observation with a <span class="up">candidate cause and an operational response</span>.</p>
         <div class="manifest">
           <span>Compiled <b>21 Jul 2026</b></span>
           <span>Source · <b>Sensor Tower / AppMagic / GachaRevenue</b></span>
@@ -451,15 +429,15 @@
           <span>Dates · <b>Prydwen timeline</b></span>
         </div>
         <div class="recorder">
-          <div class="rec reveal"><div class="k">Launch · first 30 days</div><div class="v">$132.3M</div><div class="s">net (AppMagic) · ~$245M gross <span class="ref"><a class="refjump" href="#ref-r1">[R1]</a></span></div></div>
-          <div class="rec reveal"><div class="k">Highest month on record</div><div class="v">$209.1M</div><div class="s">May 2023 <span class="ref"><a class="refjump" href="#ref-r15">[R15]</a></span></div></div>
-          <div class="rec reveal"><div class="k">Calendar 2024 · mobile</div><div class="v">$870.9M</div><div class="s">12th globally · above Genshin <span class="ref"><a class="refjump" href="#ref-r2">[R2]</a></span></div></div>
-          <div class="rec dn reveal"><div class="k">Latest tracked month</div><div class="v">$28.4M</div><div class="s">Jun 2026 · −27% MoM <span class="ref"><a class="refjump" href="#ref-r3">[R3]</a></span></div></div>
+          <div class="rec reveal"><div class="k">Launch · first 30 days</div><div class="v">$132.3M</div><div class="s">net (AppMagic) · ~$245M gross <span class="ref">[R1]</span></div></div>
+          <div class="rec reveal"><div class="k">Highest month on record</div><div class="v">$209.1M</div><div class="s">May 2023 <span class="ref">[R15]</span></div></div>
+          <div class="rec reveal"><div class="k">Calendar 2024 · mobile</div><div class="v">$870.9M</div><div class="s">12th globally · above Genshin <span class="ref">[R2]</span></div></div>
+          <div class="rec dn reveal"><div class="k">Latest tracked month</div><div class="v">$28.4M</div><div class="s">Jun 2026 · −27% MoM <span class="ref">[R3]</span></div></div>
         </div>
         <div class="provenance reveal">
           <h3>Data provenance — read before citing</h3>
           <ul>
-            <li><b>Mobile only.</b> Every figure is an iOS + Google Play estimate. It excludes PC (HoYoverse launcher / Epic), PS5 (live since Oct 2023), and Chinese third-party Android stores. Naavik modelled PC alone at ~$272.7M through Aug 2023 <span class="ref"><a class="refjump" href="#ref-r6">[R6]</a></span>, so all-platform totals are higher than shown.</li>
+            <li><b>Mobile only.</b> Every figure is an iOS + Google Play estimate. It excludes PC (HoYoverse launcher / Epic), PS5 (live since Oct 2023), and Chinese third-party Android stores. Naavik modelled PC alone at ~$272.7M through Aug 2023 <span class="ref">[R6]</span>, so all-platform totals are higher than shown.</li>
             <li><b>Third-party estimates, not official.</b> HoYoverse discloses no revenue. Trackers differ on method (gross vs. net, calendar vs. rolling 30-day), which is why some same-period figures disagree; both are shown where they do.</li>
             <li><b>No per-patch figures exist.</b> Finest verifiable granularity is <b>monthly</b>. A 42-day patch spans ~1.4 months across two banner phases, so revenue is mapped to the month it falls in — not attributed per patch.</li>
             <li><b>Sentiment is a directional read.</b> Tags below are editorial, evidence-linked where sources exist. Quantified per-platform scoring would require a tracked index (defined in the KPI section), not a manual estimate per patch.</li>
@@ -500,14 +478,14 @@
           <div class="chart reveal">
             <h3>Months with a published figure</h3>
             <div class="bars" id="bars"></div>
-            <div class="chart-note">Discrete monthly readings; not a continuous series and not cumulative. Sources: May 2023 <span class="ref"><a class="refjump" href="#ref-r15">[R15]</a></span> · Mar 2024 <span class="ref"><a class="refjump" href="#ref-r8">[R8]</a></span> · Apr 2025 <span class="ref"><a class="refjump" href="#ref-r9">[R9]</a><a class="refjump" href="#ref-r11">[R11]</a></span> · Jul 2025 <span class="ref"><a class="refjump" href="#ref-r10">[R10]</a></span> · Apr–Jun 2026 <span class="ref"><a class="refjump" href="#ref-r3">[R3]</a></span>.</div>
+            <div class="chart-note">Discrete monthly readings; not a continuous series and not cumulative. Sources: May 2023 <span class="ref">[R15]</span> · Mar 2024 <span class="ref">[R8]</span> · Apr 2025 <span class="ref">[R9][R11]</span> · Jul 2025 <span class="ref">[R10]</span> · Apr–Jun 2026 <span class="ref">[R3]</span>.</div>
           </div>
           <div class="mscard reveal">
             <h3>Lifetime milestones (mobile)</h3>
-            <div class="ms"><span class="when">25 Jul 2023 · ~3 mo</span><span class="amt">$500M</span><span class="meta">Sensor Tower <span class="ref"><a class="refjump" href="#ref-r6">[R6]</a></span></span></div>
-            <div class="ms"><span class="when">~14 Jan 2024 · ~8.5 mo</span><span class="amt">$1B</span><span class="meta">AppMagic / PocketGamer <span class="ref"><a class="refjump" href="#ref-r5">[R5]</a></span></span></div>
-            <div class="ms"><span class="when">23 Mar 2025 · ~23 mo</span><span class="amt">$2B</span><span class="meta">AppMagic / PocketGamer <span class="ref"><a class="refjump" href="#ref-r14">[R14]</a></span></span></div>
-            <div class="ms"><span class="when">Calendar 2024</span><span class="amt">$870.9M</span><span class="meta">12th globally · above Genshin's $730.1M <span class="ref"><a class="refjump" href="#ref-r2">[R2]</a><a class="refjump" href="#ref-r14">[R14]</a></span></span></div>
+            <div class="ms"><span class="when">25 Jul 2023 · ~3 mo</span><span class="amt">$500M</span><span class="meta">Sensor Tower <span class="ref">[R6]</span></span></div>
+            <div class="ms"><span class="when">~14 Jan 2024 · ~8.5 mo</span><span class="amt">$1B</span><span class="meta">AppMagic / PocketGamer <span class="ref">[R5]</span></span></div>
+            <div class="ms"><span class="when">23 Mar 2025 · ~23 mo</span><span class="amt">$2B</span><span class="meta">AppMagic / PocketGamer <span class="ref">[R14]</span></span></div>
+            <div class="ms"><span class="when">Calendar 2024</span><span class="amt">$870.9M</span><span class="meta">12th globally · above Genshin's $730.1M <span class="ref">[R2][R14]</span></span></div>
           </div>
         </div>
         <div style="margin-top:44px">
@@ -515,9 +493,9 @@
           <h2 class="sec-title" style="font-size:clamp(19px,2.4vw,28px)">ENGAGEMENT IS NOT REVENUE</h2>
           <p class="lead">Engagement peaked roughly two quarters before the $2B milestone; spending held longer than DAU, consistent with concentration into a smaller, higher-spending cohort — a common late-stage live-service pattern.</p>
           <div class="eng">
-            <div class="card reveal"><div class="big">30.1M</div><div class="cap">MAU (all platforms), Feb 2025 — +66% YoY; ~19.4M by Dec 2025. <span class="ref"><a class="refjump" href="#ref-r2">[R2]</a></span></div></div>
-            <div class="card reveal"><div class="big">3.33M</div><div class="cap">DAU peak, Aug 2024 — down ~26% across 2025. <span class="ref"><a class="refjump" href="#ref-r14">[R14]</a></span></div></div>
-            <div class="card reveal"><div class="big">$0.77</div><div class="cap">ARPDAU — above the $0.30–0.50 mid-core RPG benchmark. <span class="ref"><a class="refjump" href="#ref-r2">[R2]</a><a class="refjump" href="#ref-r14">[R14]</a></span></div></div>
+            <div class="card reveal"><div class="big">30.1M</div><div class="cap">MAU (all platforms), Feb 2025 — +66% YoY; ~19.4M by Dec 2025. <span class="ref">[R2]</span></div></div>
+            <div class="card reveal"><div class="big">3.33M</div><div class="cap">DAU peak, Aug 2024 — down ~26% across 2025. <span class="ref">[R14]</span></div></div>
+            <div class="card reveal"><div class="big">$0.77</div><div class="cap">ARPDAU — above the $0.30–0.50 mid-core RPG benchmark. <span class="ref">[R2][R14]</span></div></div>
           </div>
         </div>
       </div>
@@ -540,35 +518,35 @@
           <table id="ptable">
             <thead><tr><th>Ver</th><th>Release</th><th>Arc</th><th>Banner context</th><th>Revenue signal (mobile)</th><th>Sentiment</th></tr></thead>
             <tbody>
-              <tr data-rev="1" data-sent="pos"><td class="ver">1.0</td><td class="date">26 Apr 2023</td><td class="arc">Jarilo-VI</td><td>Seele, Jing Yuan</td><td class="rev-cell">30d ≈ $132.3M net / ~$245M gross; May ’23 ≈ $209.1M <span class="ref"><a class="refjump" href="#ref-r1">[R1]</a><a class="refjump" href="#ref-r15">[R15]</a></span></td><td><span class="tag pos">Positive</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">1.0</td><td class="date">26 Apr 2023</td><td class="arc">Jarilo-VI</td><td>Seele, Jing Yuan</td><td class="rev-cell">30d ≈ $132.3M net / ~$245M gross; May ’23 ≈ $209.1M <span class="ref">[R1][R15]</span></td><td><span class="tag pos">Positive</span></td></tr>
               <tr data-rev="0" data-sent="pos"><td class="ver">1.1</td><td class="date">07 Jun 2023</td><td class="arc">Galactic Roaming</td><td>Silver Wolf, Luocha</td><td class="rev-cell none">— (climb to $500M)</td><td><span class="tag pos">Positive</span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">1.2</td><td class="date">19 Jul 2023</td><td class="arc">Xianzhou</td><td>Kafka, Blade</td><td class="rev-cell">$500M reached 25 Jul ’23 <span class="ref"><a class="refjump" href="#ref-r6">[R6]</a></span></td><td><span class="tag pos">Positive</span></td></tr>
-              <tr data-rev="1" data-sent="mix"><td class="ver">1.3</td><td class="date">30 Aug 2023</td><td class="arc">Xianzhou</td><td>Imbibitor Lunae, Fu Xuan</td><td class="rev-cell">~$1B all-platform by end-Aug (Naavik) <span class="ref"><a class="refjump" href="#ref-r6">[R6]</a></span></td><td><span class="tag mix">Mixed</span><span class="creepflag">content-supply notes</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">1.2</td><td class="date">19 Jul 2023</td><td class="arc">Xianzhou</td><td>Kafka, Blade</td><td class="rev-cell">$500M reached 25 Jul ’23 <span class="ref">[R6]</span></td><td><span class="tag pos">Positive</span></td></tr>
+              <tr data-rev="1" data-sent="mix"><td class="ver">1.3</td><td class="date">30 Aug 2023</td><td class="arc">Xianzhou</td><td>Imbibitor Lunae, Fu Xuan</td><td class="rev-cell">~$1B all-platform by end-Aug (Naavik) <span class="ref">[R6]</span></td><td><span class="tag mix">Mixed</span><span class="creepflag">content-supply notes</span></td></tr>
               <tr data-rev="0" data-sent="mix"><td class="ver">1.4</td><td class="date">11 Oct 2023</td><td class="arc">Xianzhou</td><td>Jingliu, Topaz</td><td class="rev-cell none">— (PS5 launch 11 Oct)</td><td><span class="tag mix">Mixed</span></td></tr>
               <tr data-rev="0" data-sent="pos"><td class="ver">1.5</td><td class="date">15 Nov 2023</td><td class="arc">Xianzhou</td><td>Huohuo, Argenti</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span></td></tr>
-              <tr data-rev="0" data-sent="pos"><td class="ver">1.6</td><td class="date">27 Dec 2023</td><td class="arc">Xianzhou</td><td>Ruan Mei, Dr. Ratio</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span><span class="creepflag">free 5★ goodwill <a class="refjump" href="#ref-r17">[R17]</a></span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">2.0</td><td class="date">06 Feb 2024</td><td class="arc">Penacony</td><td>Black Swan, Sparkle, Misha</td><td class="rev-cell">$1B ≈ 14 Jan; 100M dl by Feb ’24 <span class="ref"><a class="refjump" href="#ref-r5">[R5]</a><a class="refjump" href="#ref-r14">[R14]</a></span></td><td><span class="tag pos">Positive</span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">2.1</td><td class="date">27 Mar 2024</td><td class="arc">Penacony</td><td>Acheron, Aventurine, Gallagher</td><td class="rev-cell">Mar ’24 ≈ $92.47M <span class="ref"><a class="refjump" href="#ref-r8">[R8]</a></span></td><td><span class="tag pos">Positive</span><span class="creepflag">1st anniv. generous <a class="refjump" href="#ref-r21">[R21]</a></span></td></tr>
+              <tr data-rev="0" data-sent="pos"><td class="ver">1.6</td><td class="date">27 Dec 2023</td><td class="arc">Xianzhou</td><td>Ruan Mei, Dr. Ratio</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span><span class="creepflag">free 5★ goodwill [R17]</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">2.0</td><td class="date">06 Feb 2024</td><td class="arc">Penacony</td><td>Black Swan, Sparkle, Misha</td><td class="rev-cell">$1B ≈ 14 Jan; 100M dl by Feb ’24 <span class="ref">[R5][R14]</span></td><td><span class="tag pos">Positive</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">2.1</td><td class="date">27 Mar 2024</td><td class="arc">Penacony</td><td>Acheron, Aventurine, Gallagher</td><td class="rev-cell">Mar ’24 ≈ $92.47M <span class="ref">[R8]</span></td><td><span class="tag pos">Positive</span><span class="creepflag">1st anniv. generous [R21]</span></td></tr>
               <tr data-rev="0" data-sent="pos"><td class="ver">2.2</td><td class="date">08 May 2024</td><td class="arc">Penacony</td><td>Robin, Boothill</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span></td></tr>
-              <tr data-rev="0" data-sent="pos"><td class="ver">2.3</td><td class="date">19 Jun 2024</td><td class="arc">Penacony</td><td>Firefly, Jade</td><td class="rev-cell none">— (high-demand banner) <span class="ref"><a class="refjump" href="#ref-r30">[R30]</a></span></td><td><span class="tag pos">Positive</span><span class="creepflag">powercreep noted</span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">2.4</td><td class="date">31 Jul 2024</td><td class="arc">Xianzhou return</td><td>Yunli, Jiaoqiu</td><td class="rev-cell">DAU peak 3.33M Aug ’24 <span class="ref"><a class="refjump" href="#ref-r14">[R14]</a></span></td><td><span class="tag pos">Positive</span></td></tr>
+              <tr data-rev="0" data-sent="pos"><td class="ver">2.3</td><td class="date">19 Jun 2024</td><td class="arc">Penacony</td><td>Firefly, Jade</td><td class="rev-cell none">— (high-demand banner) <span class="ref">[R30]</span></td><td><span class="tag pos">Positive</span><span class="creepflag">powercreep noted</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">2.4</td><td class="date">31 Jul 2024</td><td class="arc">Xianzhou return</td><td>Yunli, Jiaoqiu</td><td class="rev-cell">DAU peak 3.33M Aug ’24 <span class="ref">[R14]</span></td><td><span class="tag pos">Positive</span></td></tr>
               <tr data-rev="0" data-sent="pos"><td class="ver">2.5</td><td class="date">10 Sep 2024</td><td class="arc">Xianzhou</td><td>Feixiao, Lingsha, Moze</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span></td></tr>
               <tr data-rev="0" data-sent="mix"><td class="ver">2.6</td><td class="date">22 Oct 2024</td><td class="arc">—</td><td>Rappa</td><td class="rev-cell none">—</td><td><span class="tag mix">Mixed</span></td></tr>
               <tr data-rev="0" data-sent="pos"><td class="ver">2.7</td><td class="date">04 Dec 2024</td><td class="arc">End of Penacony</td><td>Sunday, Fugue</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span></td></tr>
-              <tr data-rev="1" data-sent="fr"><td class="ver">3.0</td><td class="date">15 Jan 2025</td><td class="arc">Amphoreus</td><td>The Herta, Aglaea</td><td class="rev-cell">Feb ’25: #4 gacha, above Genshin <span class="ref"><a class="refjump" href="#ref-r4">[R4]</a></span></td><td><span class="tag fr">Friction</span><span class="creepflag">lore/puzzle feedback → dev response <a class="refjump" href="#ref-r12">[R12]</a><a class="refjump" href="#ref-r13">[R13]</a></span></td></tr>
-              <tr data-rev="1" data-sent="mix"><td class="ver">3.1</td><td class="date">26 Feb 2025</td><td class="arc">Amphoreus</td><td>Mydei</td><td class="rev-cell">MAU 30.1M; $2B ≈ 23 Mar <span class="ref"><a class="refjump" href="#ref-r2">[R2]</a><a class="refjump" href="#ref-r5">[R5]</a></span></td><td><span class="tag mix">Mixed</span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">3.2</td><td class="date">09 Apr 2025</td><td class="arc">Amphoreus</td><td>Castorice, Anaxa</td><td class="rev-cell">Apr ’25 ≈ $71.1M — highest of prior 12 mo <span class="ref"><a class="refjump" href="#ref-r9">[R9]</a><a class="refjump" href="#ref-r11">[R11]</a></span></td><td><span class="tag pos">Positive</span><span class="creepflag">2nd anniv.</span></td></tr>
+              <tr data-rev="1" data-sent="fr"><td class="ver">3.0</td><td class="date">15 Jan 2025</td><td class="arc">Amphoreus</td><td>The Herta, Aglaea</td><td class="rev-cell">Feb ’25: #4 gacha, above Genshin <span class="ref">[R4]</span></td><td><span class="tag fr">Friction</span><span class="creepflag">lore/puzzle feedback → dev response [R12][R13]</span></td></tr>
+              <tr data-rev="1" data-sent="mix"><td class="ver">3.1</td><td class="date">26 Feb 2025</td><td class="arc">Amphoreus</td><td>Mydei</td><td class="rev-cell">MAU 30.1M; $2B ≈ 23 Mar <span class="ref">[R2][R5]</span></td><td><span class="tag mix">Mixed</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">3.2</td><td class="date">09 Apr 2025</td><td class="arc">Amphoreus</td><td>Castorice, Anaxa</td><td class="rev-cell">Apr ’25 ≈ $71.1M — highest of prior 12 mo <span class="ref">[R9][R11]</span></td><td><span class="tag pos">Positive</span><span class="creepflag">2nd anniv.</span></td></tr>
               <tr data-rev="0" data-sent="mix"><td class="ver">3.3</td><td class="date">21 May 2025</td><td class="arc">Amphoreus</td><td>Cipher</td><td class="rev-cell none">—</td><td><span class="tag mix">Mixed</span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">3.4</td><td class="date">02 Jul 2025</td><td class="arc">Amphoreus</td><td>Phainon; Fate collab (Saber, Archer)</td><td class="rev-cell">Jul ’25 = $78.8M — highest since Mar ’24, ~4× MoM <span class="ref"><a class="refjump" href="#ref-r10">[R10]</a></span></td><td><span class="tag pos">Positive</span><span class="creepflag">collab peak <a class="refjump" href="#ref-r42">[R42]</a></span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">3.4</td><td class="date">02 Jul 2025</td><td class="arc">Amphoreus</td><td>Phainon; Fate collab (Saber, Archer)</td><td class="rev-cell">Jul ’25 = $78.8M — highest since Mar ’24, ~4× MoM <span class="ref">[R10]</span></td><td><span class="tag pos">Positive</span><span class="creepflag">collab peak [R42]</span></td></tr>
               <tr data-rev="0" data-sent="mix"><td class="ver">3.5</td><td class="date">13 Aug 2025</td><td class="arc">Amphoreus</td><td>—</td><td class="rev-cell none">—</td><td><span class="tag mix">Mixed</span></td></tr>
-              <tr data-rev="0" data-sent="fr"><td class="ver">3.6</td><td class="date">24 Sep 2025</td><td class="arc">Amphoreus</td><td>Evernight</td><td class="rev-cell none">—</td><td><span class="tag fr">Friction</span><span class="creepflag">mono-Remembrance meta <a class="refjump" href="#ref-r16">[R16]</a></span></td></tr>
-              <tr data-rev="0" data-sent="pos"><td class="ver">3.7</td><td class="date">05 Nov 2025</td><td class="arc">Amphoreus</td><td>Cyrene</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span><span class="creepflag">Cyrene well received <a class="refjump" href="#ref-r41">[R41]</a></span></td></tr>
-              <tr data-rev="1" data-sent="pos"><td class="ver">3.8</td><td class="date">17 Dec 2025</td><td class="arc">End of Amphoreus</td><td>—</td><td class="rev-cell">MAU settles ~19.4M <span class="ref"><a class="refjump" href="#ref-r2">[R2]</a></span></td><td><span class="tag pos">Positive</span></td></tr>
+              <tr data-rev="0" data-sent="fr"><td class="ver">3.6</td><td class="date">24 Sep 2025</td><td class="arc">Amphoreus</td><td>Evernight</td><td class="rev-cell none">—</td><td><span class="tag fr">Friction</span><span class="creepflag">mono-Remembrance meta [R16]</span></td></tr>
+              <tr data-rev="0" data-sent="pos"><td class="ver">3.7</td><td class="date">05 Nov 2025</td><td class="arc">Amphoreus</td><td>Cyrene</td><td class="rev-cell none">—</td><td><span class="tag pos">Positive</span><span class="creepflag">Cyrene well received [R41]</span></td></tr>
+              <tr data-rev="1" data-sent="pos"><td class="ver">3.8</td><td class="date">17 Dec 2025</td><td class="arc">End of Amphoreus</td><td>—</td><td class="rev-cell">MAU settles ~19.4M <span class="ref">[R2]</span></td><td><span class="tag pos">Positive</span></td></tr>
               <tr data-rev="0" data-sent="mix"><td class="ver">4.0</td><td class="date">13 Feb 2026</td><td class="arc">New arc</td><td>Fate collab reruns</td><td class="rev-cell none">—</td><td><span class="tag mix">Mixed</span></td></tr>
               <tr data-rev="0" data-sent="mix"><td class="ver">4.1</td><td class="date">24 Mar 2026</td><td class="arc">—</td><td>—</td><td class="rev-cell none">—</td><td><span class="tag mix">Mixed</span></td></tr>
-              <tr data-rev="1" data-sent="mix"><td class="ver">4.2</td><td class="date">21 Apr 2026</td><td class="arc">—</td><td>Silver Wolf Lv.999</td><td class="rev-cell">Apr ’26 = $58.1M <span class="ref"><a class="refjump" href="#ref-r3">[R3]</a></span></td><td><span class="tag mix">Mixed</span><span class="creepflag">3rd anniv.; below ’25 peaks</span></td></tr>
-              <tr data-rev="1" data-sent="fr"><td class="ver">4.3</td><td class="date">01 Jun 2026</td><td class="arc">—</td><td>Mortenax Blade</td><td class="rev-cell">May ’26 $38.8M (−33%); Jun ’26 $28.4M (−27%) <span class="ref"><a class="refjump" href="#ref-r3">[R3]</a></span></td><td><span class="tag fr">Friction</span><span class="creepflag">decline</span></td></tr>
-              <tr data-rev="0" data-sent="mix"><td class="ver">4.4</td><td class="date">15 Jul 2026</td><td class="arc">—</td><td>Himeko·Nova, Rin Tohsaka, Gilgamesh</td><td class="rev-cell none">— (prev. month $28.4M) <span class="ref"><a class="refjump" href="#ref-r3">[R3]</a></span></td><td><span class="tag mix">Mixed</span></td></tr>
+              <tr data-rev="1" data-sent="mix"><td class="ver">4.2</td><td class="date">21 Apr 2026</td><td class="arc">—</td><td>Silver Wolf Lv.999</td><td class="rev-cell">Apr ’26 = $58.1M <span class="ref">[R3]</span></td><td><span class="tag mix">Mixed</span><span class="creepflag">3rd anniv.; below ’25 peaks</span></td></tr>
+              <tr data-rev="1" data-sent="fr"><td class="ver">4.3</td><td class="date">01 Jun 2026</td><td class="arc">—</td><td>Mortenax Blade</td><td class="rev-cell">May ’26 $38.8M (−33%); Jun ’26 $28.4M (−27%) <span class="ref">[R3]</span></td><td><span class="tag fr">Friction</span><span class="creepflag">decline</span></td></tr>
+              <tr data-rev="0" data-sent="mix"><td class="ver">4.4</td><td class="date">15 Jul 2026</td><td class="arc">—</td><td>Himeko·Nova, Rin Tohsaka, Gilgamesh</td><td class="rev-cell none">— (prev. month $28.4M) <span class="ref">[R3]</span></td><td><span class="tag mix">Mixed</span></td></tr>
             </tbody>
           </table>
         </div></div>
@@ -579,18 +557,21 @@
     <section class="panel" id="s-eras">
       <div class="inner">
         <div class="sec-idx">05 — ANALYSIS</div>
-        <div class="eyebrow">What the data can and can't tell us</div>
-        <h2 class="sec-title">FOUR PERIODS</h2>
-        <p class="lead">Four rough periods, read in sequence. Where a cause is inferred rather than shown, it's flagged as a guess — and a couple of these sections end without a clean recommendation, because from outside the studio the evidence doesn't support one.</p>
+        <div class="eyebrow">Observation, cause, action</div>
+        <h2 class="sec-title">FOUR ERAS</h2>
+        <p class="lead">Each era pairs the pattern with a candidate cause and a proposed operational response. Causes not directly evidenced by the data are marked as hypotheses.</p>
 
         <div class="era reveal">
           <div class="marker"><span class="n">1.x</span><span class="rng">APR–DEC 2023</span></div>
           <div>
             <h3>LAUNCH AND THE PLATEAU BASELINE</h3>
-            <p>Revenue peaked at launch (~$245M gross in 30 days; $500M by month three) and settled into a high baseline rather than falling off a cliff. The v1.6 free 5★ Dr. Ratio landed as a goodwill gesture — and it's around here that the "HSR is generous relative to Genshin" framing took hold in community discussion.</p>
+            <p>Revenue peaked at launch (~$245M gross in 30 days; $500M by month three) and normalised into a high baseline. Goodwill was established early, reinforced by the v1.6 free 5★ Dr. Ratio — setting the perception of HSR as generous relative to Genshin.</p>
             <p class="kpi">$132.3M (30d) → $500M (25 Jul) → free-5★ goodwill</p>
-            <p>One notable detail is that content-supply and endgame-cadence complaints appear even in this stretch, when the numbers were at their best. The friction later attributed to decline was already present at peak revenue, which argues against reading it purely as a symptom of falling revenue.</p>
-            <p class="hyp">Any implication is tentative: endgame and permanent-progression supply may be worth treating as a retention question early rather than a late-game patch. That depends on how players actually churn, which is not observable from revenue estimates.</p>
+            <div class="opsbox">
+              <div class="opsrow"><div class="lbl">Observation</div><div class="body">Content-supply and endgame-cadence comments appeared even during a strong revenue period.</div></div>
+              <div class="opsrow"><div class="lbl">Candidate cause</div><div class="body">Novelty-driven launch spend normalising; engaged players clearing content faster than it ships.</div></div>
+              <div class="opsrow rec"><div class="lbl">Recommendation</div><div class="body"><ul><li>Treat permanent progression / endgame supply as an early retention lever, not a late-game fix.</li><li>Bank launch goodwill as a baseline expectation to protect, not a one-off.</li></ul></div></div>
+            </div>
           </div>
         </div>
 
@@ -598,10 +579,13 @@
           <div class="marker"><span class="n">2.x</span><span class="rng">FEB–DEC 2024</span></div>
           <div>
             <h3>PENACONY — THE REVENUE PLATEAU</h3>
-            <p>2024 was the strongest full year on record ($870.9M mobile, ahead of Genshin). The two data points that can be attached to specific banners both fall here: Acheron (2.1) coincides with the ~$92.47M March reading, and Firefly (2.3) was widely reported as a high-demand banner. Past that, per-banner attribution runs out, so most of what follows is inference.</p>
+            <p>2024 was the strongest full year ($870.9M mobile, above Genshin). The data associates the plateau with story reception and marquee banners: Acheron (2.1) coincides with the ~$92.47M March reading; Firefly (2.3) was a high-demand banner. In parallel, community discussion of powercreep shifted from occasional to recurring.</p>
             <p class="kpi">$92.47M reading · $870.9M year · DAU 3.33M</p>
-            <p>Powercreep discussion moved from occasional to recurring across the year, and did so while revenue was strong. The two rose together rather than trading off. One possible explanation is that monetisation was leaning on each marquee unit raising the damage ceiling, with a 4★ like Gallagher buffering budget players unevenly. This is plausible but not demonstrated: the banners and sentiment are visible; the pull-rates behind them are not.</p>
-            <p class="hyp">The question this raises — and one an internal team could actually answer — is whether the story-driven patches held revenue as well as the power-driven ones. If narrative peaks can carry a plateau without a power jump, that changes what "content" has to do. From outside, the two can't be separated.</p>
+            <div class="opsbox">
+              <div class="opsrow"><div class="lbl">Observation</div><div class="body">Revenue strength and powercreep concern rose together; each marquee unit raised the effective damage ceiling.</div></div>
+              <div class="opsrow"><div class="lbl">Candidate cause</div><div class="body">Monetisation leaning on escalating banner power; 4★ viability (e.g. Gallagher) buffering budget players, but unevenly.</div></div>
+              <div class="opsrow rec"><div class="lbl">Recommendation</div><div class="body"><ul><li>Track a powercreep-perception signal alongside banner revenue, so the two are read together.</li><li>Protect a reliable 4★ / budget option per arc to keep non-payer teams viable.</li><li>Use the story-driven plateau to test whether narrative peaks can carry revenue without a power jump.</li></ul></div></div>
+            </div>
           </div>
         </div>
 
@@ -609,12 +593,12 @@
           <div class="marker"><span class="n">3.x</span><span class="rng">JAN–DEC 2025</span></div>
           <div>
             <h3>AMPHOREUS — SPIKES ON A DECLINING BASELINE<span class="fl">friction</span></h3>
-            <p>Revenue and sentiment diverged most noticeably during the Amphoreus cycle. v3.0 drew documented feedback on lore density and puzzle complexity, enough that HoYoverse issued a public response on 5 Feb 2025 committing to skip options and pacing changes <span class="ref"><a class="refjump" href="#ref-r12">[R12]</a><a class="refjump" href="#ref-r13">[R13]</a></span> — one of the few points on the timeline where cause and effect are on the record rather than inferred. Around the same time, roster economics tightened: Amphoreus shipped no new 4★ units, which community analysis tied to greater premium-team dependence <span class="ref"><a class="refjump" href="#ref-r16">[R16]</a></span>.</p>
-            <p>The year's two largest readings, however, came from inside this same cycle — the 2nd anniversary (3.2, ~$71.1M) and the Fate collaboration (3.4, $78.8M). These observations do not support a simple "sentiment soured, revenue followed" relationship: event spikes and a softening baseline coexisted, pointing in opposite directions, which is harder to act on than a clean decline.</p>
+            <p>The clearest divergence in the dataset. v3.0 drew documented feedback on lore density and puzzle complexity, prompting a public developer response on 5 Feb 2025 that committed to skip options and pacing changes <span class="ref">[R12][R13]</span>. Alongside, roster economics tightened: Amphoreus shipped no new 4★ units, increasing premium-team dependence <span class="ref">[R16]</span>. Yet the year's two largest readings came from the 2nd anniversary (3.2, ~$71.1M) and the Fate collaboration (3.4, $78.8M).</p>
             <p class="kpi">$71.1M anniv. · $78.8M collab · ~$2B lifetime</p>
-            <p>One possible explanation for the softening baseline is the roster changes: no budget units, Remembrance-path powercreep, and endgame tuning that <em>may</em> have assumed access to the newest units. <span class="hyp">This last point is a hypothesis and should stay one: MoC clear compositions are not visible from public data.</span> Rather than re-tune the endgame, the next step is to look at clear-rate data and check whether newer premium units are over-represented among successful teams before drawing conclusions.</p>
             <div class="opsbox">
-              <div class="opsrow rec"><div class="lbl">Carry forward</div><div class="body">One observation that appears well supported is procedural rather than mechanical: the v3.0 feedback-and-response loop <b>worked</b>, and is worth repeating when friction appears. This is an observation about process, which is visible, not about tuning, which is not.</div></div>
+              <div class="opsrow"><div class="lbl">Observation</div><div class="body">Revenue spiked on events while baseline sentiment softened — the two signals point in opposite directions.</div></div>
+              <div class="opsrow"><div class="lbl">Candidate cause</div><div class="body">Arc-transition onboarding friction; Remembrance-path powercreep; absence of budget units forcing full premium teams. <span class="hyp">Hypothesis: endgame (MoC) tuning assumed access to new premium units.</span></div></div>
+              <div class="opsrow rec"><div class="lbl">Recommendation</div><div class="body"><ul><li>Reinstate a per-arc 4★ cadence to lower forced premium-team dependence.</li><li>Keep the v3.0 skip-option response as a precedent; make responsive pacing standard, not reactive.</li><li>Re-examine endgame difficulty assumptions so clears don't require the newest banner.</li><li>Increase Developer Radio cadence around arc transitions, when friction is highest.</li></ul></div></div>
             </div>
           </div>
         </div>
@@ -623,26 +607,29 @@
           <div class="marker"><span class="n">4.x</span><span class="rng">FEB–JUL 2026</span></div>
           <div>
             <h3>SUSTAINED DECLINE, COLLAB-DEPENDENT RECOVERY<span class="fl">friction</span></h3>
-            <p>Monthly readings step down through the first half of 2026 ($58.1M → $38.8M → $28.4M) with MAU already down around 19.4M by Dec 2025. On its own that is an unremarkable shape for a live-service game several years past its spending peak. The more specific point is where the recoveries come from: they coincide primarily with collaboration patches, while non-collaboration updates have generally continued the broader downward trend. Extending the Fate collaboration into 4.4 repeats the 3.4 move of using an outside IP to lift a falling baseline.</p>
+            <p>Monthly readings step down ($58.1M → $38.8M → $28.4M) with MAU already ~19.4M by Dec 2025 — consistent with a maturing live-service title past its spending peak. The counter-move to date is IP leverage: extending the Fate collaboration into 4.4, echoing the 3.4 pattern of using a collaboration to lift a falling baseline.</p>
             <p class="kpi">$58.1M → $38.8M → $28.4M (Apr–Jun ’26)</p>
-            <p>The cause of the falling baseline is harder to establish. DAU contraction and the end of the long Amphoreus arc are observable; higher acquisition costs and stronger competition for player spend are plausible contributors that cannot be measured from public data.</p>
-            <p class="hyp">This is a signal to watch rather than a recommendation. If the gap between collaboration and non-collaboration patch revenue keeps widening, the baseline is the problem, and permanent-progression rewards and core-content pull-value are the areas to examine, provided internal retention data agrees. If instead the whole level is drifting down regardless of patch type, that is a different and harder problem, and worth diagnosing before spending against it.</p>
+            <div class="opsbox">
+              <div class="opsrow"><div class="lbl">Observation</div><div class="body">Revenue recovery is increasingly concentrated in collaboration windows rather than core content.</div></div>
+              <div class="opsrow"><div class="lbl">Candidate cause</div><div class="body">DAU contraction; completion of long arcs; weaker perceived banner pull-value. <span class="hyp">Hypotheses (not verifiable here): higher acquisition cost and stronger competition for spend.</span></div></div>
+              <div class="opsrow rec"><div class="lbl">Recommendation</div><div class="body"><ul><li>Strengthen permanent progression rewards to defend the baseline between events.</li><li>Reduce structural reliance on collabs by improving core-content pull-value.</li><li>Prioritise player-confidence investments (roster balance, communication) over short-term spike engineering.</li></ul></div></div>
+            </div>
           </div>
         </div>
 
         <div class="eyebrow cold" style="margin-top:8px">Friction breakdowns</div>
-        <h2 class="sec-title" style="font-size:clamp(19px,2.4vw,28px)">FLAGGED PATCHES IN DETAIL</h2>
-        <p class="lead">Each flagged patch has a separate entry; the timeline's rose-ringed nodes link straight to them. Complaint and praise summaries are qualitative editorial interpretations, supported by public sources where available. Version 4.3 is included as a revenue event rather than a community-sentiment one.</p>
+        <h2 class="sec-title" style="font-size:clamp(19px,2.4vw,28px)">WHY EACH FLAGGED PATCH WAS FLAGGED</h2>
+        <p class="lead">One card per rose-ringed patch on the timeline. The rail links directly here. Complaint and praise reads are directional and editorial, evidence-linked where a source exists; 4.3 is a revenue-decline flag rather than a community-sentiment one, and is separated as such.</p>
 
         <div class="case reveal" id="fr-3-0">
           <div class="case-head"><span class="v">V3.0</span><span class="t">Amphoreus launch — story pacing &amp; puzzle friction</span><span class="dt">15 JAN 2025</span></div>
           <div class="case-grid">
             <div class="cl">Flag type</div><div class="cb">Community sentiment.</div>
             <div class="cl">Channels read</div><div class="cb"><span class="chan">Reddit r/HonkaiStarRail</span><span class="chan">HoYoLAB</span><span class="chan">NGA (CN)</span><span class="chan">Bilibili</span><span class="chan">Twitter/X</span></div>
-            <div class="cl">Main complaints</div><div class="cb">Excessive lore exposition early in the arc; over-complex exploration puzzles gating side content; overall pacing. <span class="ref"><a class="refjump" href="#ref-r12">[R12]</a><a class="refjump" href="#ref-r13">[R13]</a></span></div>
-            <div class="cl">Main praise</div><div class="cb">Region art direction and world design; music; later, the Phainon storyline received positive critical reception. <span class="ref"><a class="refjump" href="#ref-r42">[R42]</a></span></div>
-            <div class="cl">Developer response</div><div class="cb">"Developer Radio | 3.0 Amphoreus: Special Edition," 5 Feb 2025 — acknowledged feedback and committed to skip options and pacing optimisation. <span class="ref"><a class="refjump" href="#ref-r12">[R12]</a></span></div>
-            <div class="cl">Assessment</div><div class="cb">A complete feedback loop: documented complaint, public response, folded-in fix. Treated here as a reusable template.</div>
+            <div class="cl">Main complaints</div><div class="cb">Excessive lore exposition early in the arc; over-complex exploration puzzles gating side content; overall pacing. <span class="ref">[R12][R13]</span></div>
+            <div class="cl">Main praise</div><div class="cb">Region art direction and world design; music; later, the Phainon storyline received positive critical reception. <span class="ref">[R42]</span></div>
+            <div class="cl">Developer response</div><div class="cb">"Developer Radio | 3.0 Amphoreus: Special Edition," 5 Feb 2025 — acknowledged feedback and committed to skip options and pacing optimisation. <span class="ref">[R12]</span></div>
+            <div class="cl">Resolution</div><div class="cb">Skip / pacing adjustments folded into subsequent versions; treated here as evidence of a functioning feedback loop, and a reusable response template.</div>
           </div>
         </div>
 
@@ -651,10 +638,10 @@
           <div class="case-grid">
             <div class="cl">Flag type</div><div class="cb">Community sentiment.</div>
             <div class="cl">Channels read</div><div class="cb"><span class="chan">Reddit r/HonkaiStarRail</span><span class="chan">HoYoLAB</span><span class="chan">NGA (CN)</span><span class="chan">Bilibili</span></div>
-            <div class="cl">Main complaints</div><div class="cb">A meta increasingly built around the Remembrance path, with newer premium units crowding out alternatives; compounded by Amphoreus shipping no new 4★ units, which raised dependence on full premium teams and squeezed budget / non-payer options. <span class="ref"><a class="refjump" href="#ref-r16">[R16]</a></span></div>
+            <div class="cl">Main complaints</div><div class="cb">A meta increasingly built around the Remembrance path, with newer premium units crowding out alternatives; compounded by Amphoreus shipping no new 4★ units, which raised dependence on full premium teams and squeezed budget / non-payer options. <span class="ref">[R16]</span></div>
             <div class="cl">Revenue context</div><div class="cb">No separate monthly figure was published for this patch; the flag is a sentiment read, not a revenue event.</div>
-            <div class="cl">Candidate cause <span class="hyp">(hypothesis)</span></div><div class="cb">Monetisation leaning on escalating banner power, without a per-arc 4★ cadence to buffer budget players. <span class="hyp">Whether endgame tuning actually assumed the newest units is unverifiable from here.</span></div>
-            <div class="cl">Suggested next step</div><div class="cb">Check whether endgame clear rates track premium-unit access before treating this as a tuning problem. If budget-team viability is measurably dropping, a per-arc 4★ cadence is one option to test.</div>
+            <div class="cl">Candidate cause</div><div class="cb">Monetisation leaning on escalating banner power, without a per-arc 4★ cadence to buffer budget players. <span class="hyp">Hypothesis (not verifiable here): endgame tuning assumed access to the newest premium units.</span></div>
+            <div class="cl">Recommendation</div><div class="cb">Reinstate a per-arc 4★ cadence to lower forced premium-team dependence, and re-examine endgame difficulty so clears do not require the newest banner.</div>
           </div>
         </div>
 
@@ -662,10 +649,10 @@
           <div class="case-head"><span class="v">V4.3</span><span class="t">Sharpest revenue step-down in the dataset</span><span class="dt">01 JUN 2026</span></div>
           <div class="case-grid">
             <div class="cl">Flag type</div><div class="cb">Revenue decline (distinct from community sentiment).</div>
-            <div class="cl">What happened</div><div class="cb">Consecutive month-over-month drops: May ’26 $38.8M (−33%) then Jun ’26 $28.4M (−27%) — the steepest sustained decline on record, against MAU already settled near ~19.4M by Dec 2025. <span class="ref"><a class="refjump" href="#ref-r3">[R3]</a><a class="refjump" href="#ref-r2">[R2]</a></span></div>
-            <div class="cl">Candidate cause <span class="hyp">(partly hypothesis)</span></div><div class="cb">DAU contraction and the end of the long Amphoreus arc are observable; <span class="hyp">higher acquisition cost and stronger competition for spend are plausible but unmeasurable from public data.</span></div>
+            <div class="cl">What happened</div><div class="cb">Consecutive month-over-month drops: May ’26 $38.8M (−33%) then Jun ’26 $28.4M (−27%) — the steepest sustained decline on record, against MAU already settled near ~19.4M by Dec 2025. <span class="ref">[R3][R2]</span></div>
+            <div class="cl">Candidate cause</div><div class="cb">DAU contraction; completion of the long Amphoreus arc; weaker perceived banner pull-value. <span class="hyp">Hypotheses (not verifiable here): higher acquisition cost and stronger competition for spend.</span></div>
             <div class="cl">Counter-move to date</div><div class="cb">IP leverage — extending the Fate collaboration into 4.4, echoing the 3.4 pattern of using a collaboration to lift a falling baseline.</div>
-            <div class="cl">Suggested next step</div><div class="cb">Watch whether the collab / non-collab revenue gap keeps widening. A widening gap points at the baseline (permanent progression, core pull-value); a uniform drift points somewhere harder, and is worth diagnosing before spending against it.</div>
+            <div class="cl">Recommendation</div><div class="cb">Strengthen permanent progression to defend the baseline between events; reduce structural reliance on collabs by improving core-content pull-value; prioritise player-confidence investment over short-term spike engineering.</div>
           </div>
         </div>
 
@@ -683,32 +670,33 @@
         <div class="sec-idx">06 — KPIS</div>
         <div class="eyebrow">What to watch</div>
         <h2 class="sec-title">KPI MONITORING FRAMEWORK</h2>
-        <p class="lead">Revenue and sentiment often moved independently over these three years. The KPIs below are meant to catch a change in either signal before it shows up in monthly revenue — read against an agreed baseline, since a break in trend is more informative than any single month's number.</p>
+        <p class="lead">The metrics I'd track, what each is a proxy for, and how often I'd review it. The weekly review focuses on trend breaks against a pre-agreed baseline, not absolute values.</p>
         <div class="tablecard reveal" style="margin-top:22px"><div class="tscroll">
           <table>
-            <thead><tr><th>KPI</th><th>What it tells you</th><th>Review cadence</th></tr></thead>
+            <thead><tr><th>KPI</th><th>Signal / proxy for</th><th>Review cadence</th></tr></thead>
             <tbody>
-              <tr><td class="kpi-name">DAU</td><td>First place a live problem surfaces; a broken banner or bad patch dents it within a day</td><td class="kpi-cad">Daily</td></tr>
-              <tr><td class="kpi-name">WAU / MAU</td><td>Retention and growth, with banner-phase noise smoothed out</td><td class="kpi-cad">Weekly / Monthly</td></tr>
-              <tr><td class="kpi-name">D1 / D7 / D30 retention</td><td>Whether each patch's onboarding actually holds new and returning players</td><td class="kpi-cad">Per patch cohort</td></tr>
-              <tr><td class="kpi-name">Banner conversion (pull-through)</td><td>How hard a specific unit or phase is pulling spend</td><td class="kpi-cad">Per banner</td></tr>
-              <tr><td class="kpi-name">ARPPU / payer rate</td><td>Whether revenue is broadening or narrowing toward a few whales</td><td class="kpi-cad">Weekly</td></tr>
-              <tr><td class="kpi-name">Sentiment index</td><td>Splits story complaints from balance complaints, which move independently</td><td class="kpi-cad">Daily / Weekly</td></tr>
-              <tr><td class="kpi-name">CS ticket volume &amp; top tags</td><td>Catches live issues before they reach public reviews</td><td class="kpi-cad">Daily</td></tr>
-              <tr><td class="kpi-name">Crash rate / ANR / perf</td><td>A quality floor: no revenue or sentiment read counts while this is elevated</td><td class="kpi-cad">Per build / Daily</td></tr>
-              <tr><td class="kpi-name">Story / quest completion</td><td>Where players drop off in the narrative — a direct read on pacing friction</td><td class="kpi-cad">Per patch</td></tr>
-              <tr><td class="kpi-name">Endgame clear rates (MoC / PF / AS)</td><td>Difficulty tuning and how much powercreep pressure the roster is under</td><td class="kpi-cad">Per cycle</td></tr>
+              <tr><td class="kpi-name">DAU</td><td>Day-to-day player health; fastest reaction to live issues</td><td class="kpi-cad">Daily</td></tr>
+              <tr><td class="kpi-name">WAU / MAU</td><td>Retention and growth; smooths banner-phase noise</td><td class="kpi-cad">Weekly / Monthly</td></tr>
+              <tr><td class="kpi-name">D1 / D7 / D30 retention</td><td>Onboarding quality and early stickiness, by patch cohort</td><td class="kpi-cad">Per patch</td></tr>
+              <tr><td class="kpi-name">Banner conversion (pull-through)</td><td>Monetisation strength of a specific unit / phase</td><td class="kpi-cad">Per banner</td></tr>
+              <tr><td class="kpi-name">ARPPU / payer rate</td><td>Spend quality vs. breadth — is revenue narrowing to whales?</td><td class="kpi-cad">Weekly</td></tr>
+              <tr><td class="kpi-name">Sentiment index</td><td>Community health; multi-platform, volume-weighted, story vs. balance split</td><td class="kpi-cad">Daily / Weekly</td></tr>
+              <tr><td class="kpi-name">CS ticket volume &amp; top tags</td><td>Emerging live issues before they reach reviews</td><td class="kpi-cad">Daily</td></tr>
+              <tr><td class="kpi-name">Crash rate / ANR / perf</td><td>Technical quality; a hard gate on any positive read</td><td class="kpi-cad">Per build / Daily</td></tr>
+              <tr><td class="kpi-name">Story / quest completion</td><td>Narrative engagement and pacing friction (drop-off points)</td><td class="kpi-cad">Per patch</td></tr>
+              <tr><td class="kpi-name">Endgame clear rates (MoC / PF / AS)</td><td>Difficulty tuning and roster-balance / powercreep pressure</td><td class="kpi-cad">Per cycle</td></tr>
             </tbody>
           </table>
         </div></div>
 
-        <div class="eyebrow" style="margin-top:52px">Taking stock</div>
-        <h2 class="sec-title" style="font-size:clamp(19px,2.4vw,28px)">TAKING STOCK</h2>
-        <p class="lead">Three points to carry out of this: one that was surprising, one that is uncertain, and one to investigate.</p>
+        <div class="eyebrow" style="margin-top:52px">Synthesis</div>
+        <h2 class="sec-title" style="font-size:clamp(19px,2.4vw,28px)">TAKEAWAYS FOR LIVE OPERATIONS</h2>
         <div class="takes" style="margin-top:20px">
-          <div class="take reveal"><div class="tn">MOST SURPRISING</div><p>Sentiment friction was present from the very beginning — during the highest-revenue stretch of the game's history, not only later. Reading balance and pacing complaints as symptoms of decline is not supported by the timeline; they predate it. Whatever drives sentiment appears to run at least partly independent of revenue performance.</p></div>
-          <div class="take reveal"><div class="tn">LEAST SURE OF</div><p>Nearly every causal claim about why the baseline is falling. We can see revenue estimates, public sentiment, and announcements. We cannot see pull-rates, retention curves, clear-rate compositions, or acquisition costs — the data that would turn these hypotheses into findings. The confident-sounding parts of this report are the observations; the causes are guesses of varying quality.</p></div>
-          <div class="take reveal" style="grid-column:1/-1"><div class="tn">WORTH INVESTIGATING NEXT</div><p>Three checks an internal team could run:</p><ul style="margin:6px 0 0 18px;padding:0;color:var(--foam-dim);font-weight:300;line-height:1.75;font-size:13.5px"><li>Whether story-driven patches hold revenue comparably to power-driven ones — the plateau year is well-suited to answer this.</li><li>Whether newer premium units are over-represented in successful endgame teams, which would show whether the powercreep complaints reflect real tuning pressure or noise.</li><li>Whether the collab / non-collab revenue gap is widening, which distinguishes a defensible baseline from a drifting one.</li></ul><p style="margin-top:10px"><b style="color:var(--foam)">The v3.0 feedback loop is the one process here that demonstrably worked, and the least costly to repeat.</b></p></div>
+          <div class="take reveal"><div class="tn">01</div><p>Anniversary patches reliably generate revenue spikes. Plan them as calendar anchors and set the baseline expectation accordingly, rather than reading each spike as new momentum.</p></div>
+          <div class="take reveal"><div class="tn">02</div><p>Sentiment increasingly depends on perceived long-term roster balance rather than launch-day generosity. Powercreep management is a community-health lever, not only a design one.</p></div>
+          <div class="take reveal"><div class="tn">03</div><p>Revenue resilience is leaning more on collaboration events than core content — a concentration risk worth monitoring, since it makes the baseline harder to defend between collabs.</p></div>
+          <div class="take reveal"><div class="tn">04</div><p>Story quality remains a goodwill driver that appears largely independent of monetisation. It is a low-cost lever for sentiment that does not require a power jump.</p></div>
+          <div class="take reveal"><div class="tn">05</div><p>Content planning should weight sustainable player confidence alongside short-term revenue opportunities. The 3.0 feedback loop is a repeatable model for responding when friction appears.</p></div>
         </div>
       </div>
     </section>
@@ -721,34 +709,37 @@
         <h2 class="sec-title">REFERENCES</h2>
         <p class="lead">Trace each aggregator back to the originating provider — Sensor Tower / AppMagic / PocketGamer / GachaRevenue — before citing externally.</p>
         <div class="refs reveal">
-          <p class="r" id="ref-r1"><span class="id">R1</span> WN Hub / GameDevReports — first-month $132.3M net; Sensor Tower ~$245M gross. <span class="prov"><a href="https://wnhub.io/news/analytics/item-40555" target="_blank" rel="noopener">wnhub.io</a> · <a href="https://gamedevreports.substack.com/p/appmagic-honkai-star-rail-earned" target="_blank" rel="noopener">gamedevreports</a></span></p>
-          <p class="r" id="ref-r2"><span class="id">R2</span> rec0ded88 — 2024 $870.9M vs Genshin $730.1M; MAU 30.1M / 19.4M; ARPDAU $0.77. <span class="prov"><a href="https://rec0ded88.com/statistics/mihoyo/" target="_blank" rel="noopener">mihoyo</a> · <a href="https://rec0ded88.com/statistics/honkai-star-rail/" target="_blank" rel="noopener">hsr</a></span></p>
-          <p class="r" id="ref-r3"><span class="id">R3</span> HostedGG (SensorTower via GachaRevenue) — Apr ’26 $58.1M, May $38.8M, Jun $28.4M. <span class="prov"><a href="https://hostedgg.com/wiki/hsr/revenue" target="_blank" rel="noopener">hostedgg</a> · <a href="https://revenue.ennead.cc/games/star-rail" target="_blank" rel="noopener">ennead</a></span></p>
-          <p class="r" id="ref-r4"><span class="id">R4</span> Sportskeeda (GachaRevenue) — Feb 2025 ranking, HSR #4, above Genshin. <span class="prov"><a href="https://sportskeeda.com/esports/genshin-impact-reportedly-faces-massive-revenue-drop-february-2025" target="_blank" rel="noopener">sportskeeda</a></span></p>
-          <p class="r" id="ref-r5"><span class="id">R5</span> PocketGamer.biz (AppMagic) — $1B ≈ 14 Jan 2024; $2B 23 Mar 2025. <span class="prov"><a href="https://www.pocketgamer.biz/honkai-star-rail-rockets-past-2bn-on-mobile-in-under-two-years/" target="_blank" rel="noopener">pocketgamer.biz</a></span></p>
-          <p class="r" id="ref-r6"><span class="id">R6</span> GameDevReports (Sensor Tower; Naavik) — $500M 25 Jul 2023; all-platform ~$1B by end-Aug, PC ~$272.7M. <span class="prov"><a href="https://gamedevreports.substack.com/p/sensor-tower-honkai-star-rail-reaches" target="_blank" rel="noopener">sensor tower</a> · <a href="https://gamedevreports.substack.com/p/naavik-honkai-star-rail-revenue-surpassed" target="_blank" rel="noopener">naavik</a></span></p>
-          <p class="r" id="ref-r7"><span class="id">R7</span> Prydwen Institute — HSR patch timeline (all 29 dates). <span class="prov"><a href="https://www.prydwen.gg/star-rail/patch-timeline" target="_blank" rel="noopener">prydwen.gg</a></span></p>
-          <p class="r" id="ref-r8"><span class="id">R8</span> Accio (citing Statista) — $92.47M Mar 2024; $71.13M Apr 2025. <span class="prov"><a href="https://www.accio.com/business/hsr-best-selling-banners" target="_blank" rel="noopener">accio.com</a></span></p>
-          <p class="r" id="ref-r9"><span class="id">R9</span> Sensor Tower — biggest spike in 12 months, 2nd-anniversary event. <span class="prov"><a href="https://app.sensortower.com/news-feed/honkai-star-rail-sees-biggest-revenue-spike-in-last-twelve-months-with-2nd-anniversary-event/67f9ae96b9435a18ad2d430d" target="_blank" rel="noopener">sensortower</a></span></p>
-          <p class="r" id="ref-r10"><span class="id">R10</span> GameDevReports (AppMagic) — Jul 2025 v3.4 $78.8M, highest since Mar ’24, ~4× MoM. <span class="prov"><a href="https://gamedevreports.substack.com/p/appmagic-top-mobile-games-by-revenue-019" target="_blank" rel="noopener">gamedevreports</a></span></p>
-          <p class="r" id="ref-r11"><span class="id">R11</span> QuantumRun — Apr 2025 ~$71.2M recent high. <span class="prov"><a href="https://www.quantumrun.com/consulting/honkai-star-rail/" target="_blank" rel="noopener">quantumrun</a></span></p>
-          <p class="r" id="ref-r12"><span class="id">R12</span> Game8 — HSR addresses Amphoreus feedback (Dev Radio, 5 Feb 2025). <span class="prov"><a href="https://game8.co/articles/latest/honkai-star-rail-addresses-fan-feedback-on-amphoreus" target="_blank" rel="noopener">game8.co</a></span></p>
-          <p class="r" id="ref-r13"><span class="id">R13</span> Sportskeeda — HSR devs respond to v3.0 Amphoreus feedback. <span class="prov"><a href="https://sportskeeda.com/esports/honkai-star-rail-developers-respond-version-3-0-amphoreus-feedback" target="_blank" rel="noopener">sportskeeda</a></span></p>
-          <p class="r" id="ref-r14"><span class="id">R14</span> QuantumRun / PocketGamer (AppMagic) — 2024 $870.9M; DAU 3.33M; 100M dl; $2B in 23 mo. <span class="prov"><a href="https://www.quantumrun.com/consulting/honkai-star-rail/" target="_blank" rel="noopener">quantumrun</a></span></p>
-          <p class="r" id="ref-r15"><span class="id">R15</span> QuantumRun — highest month May 2023 ≈ $209.1M. <span class="prov"><a href="https://www.quantumrun.com/consulting/honkai-star-rail/" target="_blank" rel="noopener">quantumrun</a></span></p>
-          <p class="r" id="ref-r16"><span class="id">R16</span> HSR Wiki (Fandom) — powercreep / Remembrance analysis; no Amphoreus 4★. <span class="prov"><a href="https://honkai-star-rail.fandom.com/wiki/User_blog:AkiviliKaslana/Star_Rail's_powercreep_is_a_genuine_problem_(rant)" target="_blank" rel="noopener">fandom</a></span></p>
-          <p class="r" id="ref-r17"><span class="id">R17</span> Sportskeeda — free 5★ Dr. Ratio (v1.6); generosity contrast. <span class="prov"><a href="https://sportskeeda.com/esports/genshin-impact-fans-furious-hoyoverse-announces-free-5-star-character-honkai-star-rail" target="_blank" rel="noopener">sportskeeda</a></span></p>
-          <p class="r" id="ref-r21"><span class="id">R21</span> Sportskeeda — 1st-anniversary rewards (1,600 Jades, 20 passes). <span class="prov"><a href="https://www.sportskeeda.com/esports/news-honkai-star-rail-anniversary-rewards-free-passes-stellar-jades" target="_blank" rel="noopener">sportskeeda</a></span></p>
-          <p class="r" id="ref-r30"><span class="id">R30</span> Accio / HoYoLAB — Firefly high-demand banner / top-up strain. <span class="prov"><a href="https://www.accio.com/business/hsr-best-selling-banners" target="_blank" rel="noopener">accio</a> · <a href="https://www.hoyolab.com/article/30513353" target="_blank" rel="noopener">hoyolab</a></span></p>
-          <p class="r" id="ref-r41"><span class="id">R41</span> Wikipedia — Cyrene (HSR): playable v3.7, well received. <span class="prov"><a href="https://en.wikipedia.org/wiki/Cyrene_(Honkai:_Star_Rail)" target="_blank" rel="noopener">wikipedia</a></span></p>
-          <p class="r" id="ref-r42"><span class="id">R42</span> Wikipedia — Phainon (HSR): playable v3.4, positive reception. <span class="prov"><a href="https://en.wikipedia.org/wiki/Phainon_(Honkai:_Star_Rail)" target="_blank" rel="noopener">wikipedia</a></span></p>
+          <p class="r"><span class="id">R1</span> WN Hub / GameDevReports — first-month $132.3M net; Sensor Tower ~$245M gross. <span class="prov"><a href="https://wnhub.io/news/analytics/item-40555" target="_blank" rel="noopener">wnhub.io</a> · <a href="https://gamedevreports.substack.com/p/appmagic-honkai-star-rail-earned" target="_blank" rel="noopener">gamedevreports</a></span></p>
+          <p class="r"><span class="id">R2</span> rec0ded88 — 2024 $870.9M vs Genshin $730.1M; MAU 30.1M / 19.4M; ARPDAU $0.77. <span class="prov"><a href="https://rec0ded88.com/statistics/mihoyo/" target="_blank" rel="noopener">mihoyo</a> · <a href="https://rec0ded88.com/statistics/honkai-star-rail/" target="_blank" rel="noopener">hsr</a></span></p>
+          <p class="r"><span class="id">R3</span> HostedGG (SensorTower via GachaRevenue) — Apr ’26 $58.1M, May $38.8M, Jun $28.4M. <span class="prov"><a href="https://hostedgg.com/wiki/hsr/revenue" target="_blank" rel="noopener">hostedgg</a> · <a href="https://revenue.ennead.cc/games/star-rail" target="_blank" rel="noopener">ennead</a></span></p>
+          <p class="r"><span class="id">R4</span> Sportskeeda (GachaRevenue) — Feb 2025 ranking, HSR #4, above Genshin. <span class="prov"><a href="https://sportskeeda.com/esports/genshin-impact-reportedly-faces-massive-revenue-drop-february-2025" target="_blank" rel="noopener">sportskeeda</a></span></p>
+          <p class="r"><span class="id">R5</span> PocketGamer.biz (AppMagic) — $1B ≈ 14 Jan 2024; $2B 23 Mar 2025. <span class="prov"><a href="https://www.pocketgamer.biz/honkai-star-rail-rockets-past-2bn-on-mobile-in-under-two-years/" target="_blank" rel="noopener">pocketgamer.biz</a></span></p>
+          <p class="r"><span class="id">R6</span> GameDevReports (Sensor Tower; Naavik) — $500M 25 Jul 2023; all-platform ~$1B by end-Aug, PC ~$272.7M. <span class="prov"><a href="https://gamedevreports.substack.com/p/sensor-tower-honkai-star-rail-reaches" target="_blank" rel="noopener">sensor tower</a> · <a href="https://gamedevreports.substack.com/p/naavik-honkai-star-rail-revenue-surpassed" target="_blank" rel="noopener">naavik</a></span></p>
+          <p class="r"><span class="id">R7</span> Prydwen Institute — HSR patch timeline (all 29 dates). <span class="prov"><a href="https://www.prydwen.gg/star-rail/patch-timeline" target="_blank" rel="noopener">prydwen.gg</a></span></p>
+          <p class="r"><span class="id">R8</span> Accio (citing Statista) — $92.47M Mar 2024; $71.13M Apr 2025. <span class="prov"><a href="https://www.accio.com/business/hsr-best-selling-banners" target="_blank" rel="noopener">accio.com</a></span></p>
+          <p class="r"><span class="id">R9</span> Sensor Tower — biggest spike in 12 months, 2nd-anniversary event. <span class="prov"><a href="https://app.sensortower.com/news-feed/honkai-star-rail-sees-biggest-revenue-spike-in-last-twelve-months-with-2nd-anniversary-event/67f9ae96b9435a18ad2d430d" target="_blank" rel="noopener">sensortower</a></span></p>
+          <p class="r"><span class="id">R10</span> GameDevReports (AppMagic) — Jul 2025 v3.4 $78.8M, highest since Mar ’24, ~4× MoM. <span class="prov"><a href="https://gamedevreports.substack.com/p/appmagic-top-mobile-games-by-revenue-019" target="_blank" rel="noopener">gamedevreports</a></span></p>
+          <p class="r"><span class="id">R11</span> QuantumRun — Apr 2025 ~$71.2M recent high. <span class="prov"><a href="https://www.quantumrun.com/consulting/honkai-star-rail/" target="_blank" rel="noopener">quantumrun</a></span></p>
+          <p class="r"><span class="id">R12</span> Game8 — HSR addresses Amphoreus feedback (Dev Radio, 5 Feb 2025). <span class="prov"><a href="https://game8.co/articles/latest/honkai-star-rail-addresses-fan-feedback-on-amphoreus" target="_blank" rel="noopener">game8.co</a></span></p>
+          <p class="r"><span class="id">R13</span> Sportskeeda — HSR devs respond to v3.0 Amphoreus feedback. <span class="prov"><a href="https://sportskeeda.com/esports/honkai-star-rail-developers-respond-version-3-0-amphoreus-feedback" target="_blank" rel="noopener">sportskeeda</a></span></p>
+          <p class="r"><span class="id">R14</span> QuantumRun / PocketGamer (AppMagic) — 2024 $870.9M; DAU 3.33M; 100M dl; $2B in 23 mo. <span class="prov"><a href="https://www.quantumrun.com/consulting/honkai-star-rail/" target="_blank" rel="noopener">quantumrun</a></span></p>
+          <p class="r"><span class="id">R15</span> QuantumRun — highest month May 2023 ≈ $209.1M. <span class="prov"><a href="https://www.quantumrun.com/consulting/honkai-star-rail/" target="_blank" rel="noopener">quantumrun</a></span></p>
+          <p class="r"><span class="id">R16</span> HSR Wiki (Fandom) — powercreep / Remembrance analysis; no Amphoreus 4★. <span class="prov"><a href="https://honkai-star-rail.fandom.com/wiki/User_blog:AkiviliKaslana/Star_Rail's_powercreep_is_a_genuine_problem_(rant)" target="_blank" rel="noopener">fandom</a></span></p>
+          <p class="r"><span class="id">R17</span> Sportskeeda — free 5★ Dr. Ratio (v1.6); generosity contrast. <span class="prov"><a href="https://sportskeeda.com/esports/genshin-impact-fans-furious-hoyoverse-announces-free-5-star-character-honkai-star-rail" target="_blank" rel="noopener">sportskeeda</a></span></p>
+          <p class="r"><span class="id">R21</span> Sportskeeda — 1st-anniversary rewards (1,600 Jades, 20 passes). <span class="prov"><a href="https://www.sportskeeda.com/esports/news-honkai-star-rail-anniversary-rewards-free-passes-stellar-jades" target="_blank" rel="noopener">sportskeeda</a></span></p>
+          <p class="r"><span class="id">R30</span> Accio / HoYoLAB — Firefly high-demand banner / top-up strain. <span class="prov"><a href="https://www.accio.com/business/hsr-best-selling-banners" target="_blank" rel="noopener">accio</a> · <a href="https://www.hoyolab.com/article/30513353" target="_blank" rel="noopener">hoyolab</a></span></p>
+          <p class="r"><span class="id">R41</span> Wikipedia — Cyrene (HSR): playable v3.7, well received. <span class="prov"><a href="https://en.wikipedia.org/wiki/Cyrene_(Honkai:_Star_Rail)" target="_blank" rel="noopener">wikipedia</a></span></p>
+          <p class="r"><span class="id">R42</span> Wikipedia — Phainon (HSR): playable v3.4, positive reception. <span class="prov"><a href="https://en.wikipedia.org/wiki/Phainon_(Honkai:_Star_Rail)" target="_blank" rel="noopener">wikipedia</a></span></p>
         </div>
 
         <div class="foot">
           <div class="foot-logo">AST<em>RAL</em></div>
           <div class="foot-tag">LIVE-OPS BRIEF · PREPARED AS A PORTFOLIO / INTERNAL-STYLE BRIEFING</div>
           <p class="foot-legal">ALL REVENUE FIGURES ARE THIRD-PARTY MOBILE-CHANNEL ESTIMATES, NOT OFFICIAL HOYOVERSE DISCLOSURES, AND EXCLUDE PC, PS5, AND CHINESE THIRD-PARTY ANDROID STORES. OPERATIONAL RECOMMENDATIONS ARE THE AUTHOR'S PROPOSALS FOR DISCUSSION, NOT SOURCED CLAIMS. VERIFY DATA AGAINST CITED PROVIDERS BEFORE EXTERNAL USE.</p>
-          <button class="to-top" data-go="s-hero">BACK TO TOP ↑</button>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+            <button class="to-top" data-go="s-hero">BACK TO TOP ↑</button>
+            <a class="to-top" href="hsr-live-service-analysis.html">READ THE FULL REPORT ↗</a>
+          </div>
         </div>
       </div>
     </section>
@@ -803,51 +794,41 @@ const preTimer = setInterval(()=>{
   if(p >= 100){ clearInterval(preTimer); setTimeout(()=>pre.classList.add('done'), 250); }
 }, reduced ? 40 : 200);
 
-/* ---------- particle sea ---------- */
-const cv = document.getElementById('sea'), cx = cv.getContext('2d');
-let W,H,motes=[];
-function sizeSea(){ W=cv.width=innerWidth; H=cv.height=innerHeight;
-  motes = Array.from({length: Math.min(90, W/14)}, ()=>({
-    x:Math.random()*W, y:Math.random()*H, r:Math.random()*2+0.4,
-    vy:-(Math.random()*.35+.08), vx:(Math.random()-.5)*.12, a:Math.random()*.5+.15
-  }));
-}
-sizeSea(); addEventListener('resize', sizeSea);
-let seaTint = 0.14;
-function drawSea(){
-  cx.clearRect(0,0,W,H);
-  for(const m of motes){
-    m.x+=m.vx; m.y+=m.vy;
-    if(m.y< -4){ m.y=H+4; m.x=Math.random()*W; }
-    cx.beginPath(); cx.arc(m.x,m.y,m.r,0,Math.PI*2);
-    cx.fillStyle = 'rgba(75,159,232,'+(m.a*seaTint*2.4)+')';
-    cx.fill();
+/* ---------- starfield (twinkling) — ported from the reference design ---------- */
+(function(){
+  const c = document.getElementById('sea'), x = c.getContext('2d');
+  let stars = [], W, H;
+  function size(){
+    W = c.width = innerWidth; H = c.height = innerHeight;
+    stars = Array.from({length: Math.min(160, W*H/9000)}, ()=>({
+      px: Math.random()*W, py: Math.random()*H, r: Math.random()*1.1+.2,
+      a: Math.random()*.5+.15, tw: Math.random()*Math.PI*2,
+      hue: Math.random()<.18 ? '75,159,232' : (Math.random()<.14 ? '243,197,107' : '230,236,251')
+    }));
   }
-  if(!reduced) requestAnimationFrame(drawSea);
-}
-drawSea();
+  size(); addEventListener('resize', size);
+  function draw(t){
+    x.clearRect(0,0,W,H);
+    for(const s of stars){
+      const f = reduced ? 1 : (.65 + .35*Math.sin(t/1400 + s.tw));
+      x.beginPath(); x.arc(s.px, s.py, s.r, 0, 7);
+      x.fillStyle = 'rgba('+s.hue+','+(s.a*f)+')'; x.fill();
+    }
+    if(!reduced) requestAnimationFrame(draw);
+  }
+  reduced ? draw(0) : requestAnimationFrame(draw);
+})();
 
 /* ---------- landing → main transition ---------- */
 const landing = document.getElementById('landing');
 const main = document.getElementById('main');
 const wipe = document.getElementById('wipe');
-function enterMain(){ landing.classList.add('hidden'); main.classList.add('live'); }
-document.getElementById('enter').addEventListener('click', (e)=>{
-  e.preventDefault();
-  if(reduced){ enterMain(); return; }
+document.getElementById('enter').addEventListener('click', ()=>{
+  if(reduced){ landing.classList.add('hidden'); main.classList.add('live'); return; }
   wipe.classList.add('run');
-  setTimeout(enterMain, 500);
+  setTimeout(()=>{ landing.classList.add('hidden'); main.classList.add('live'); }, 500);
   setTimeout(()=>wipe.classList.remove('run'), 1200);
 });
-/* deep links: opening the page with #s-tele, #fr-3-0 etc. skips the preloader
-   and landing gate and jumps straight to the referenced section */
-const hashTarget = location.hash && document.getElementById(location.hash.slice(1));
-if(hashTarget && main.contains(hashTarget)){
-  clearInterval(preTimer);
-  pre.classList.add('done');
-  enterMain();
-  requestAnimationFrame(()=>hashTarget.scrollIntoView({block:'start'}));
-}
 
 /* ---------- rail stations ---------- */
 const stEl = document.getElementById('stations');
@@ -863,7 +844,7 @@ PATCHES.forEach(pt=>{
     '<div class="ver">'+pt.v+'</div><div class="date">'+pt.d+'</div>'+
     (pt.fr?'<div class="fr-tag">friction \u2197</div>':'');
   if(tgt){
-    el.setAttribute('role','button');
+    el.setAttribute('role','link');
     el.setAttribute('tabindex','0');
     el.setAttribute('aria-label','Jump to the v'+pt.v+' friction breakdown');
     el.addEventListener('click', ()=>jumpTo(tgt));
@@ -873,7 +854,7 @@ PATCHES.forEach(pt=>{
 });
 
 /* ---------- revenue bars ---------- */
-const maxBar = Math.max(...BARS.map(b=>b.val)), barsEl = document.getElementById('bars');
+const maxBar = 209.1, barsEl = document.getElementById('bars');
 BARS.forEach(b=>{
   const w = document.createElement('div'); w.className='bar';
   const h = Math.max(6,(b.val/maxBar)*100);
@@ -917,35 +898,25 @@ const zoneLabel = document.getElementById('zone-label');
 document.querySelectorAll('[data-go]').forEach(b=>{
   b.addEventListener('click', ()=>document.getElementById(b.dataset.go).scrollIntoView({behavior:reduced?'auto':'smooth'}));
 });
-/* cache node lists and section refs once — no per-scroll querySelectorAll */
-const gaugeDotBtns = document.querySelectorAll('#gauge-dots button');
-const navBtns = document.querySelectorAll('#navlinks button');
-const zoneEls = ZONES.map(z=>document.getElementById(z.sec));
-let scrollTick = false;
-function onScroll(){
+scroller.addEventListener('scroll', ()=>{
   const max = scroller.scrollHeight - scroller.clientHeight;
   const t = max ? scroller.scrollTop / max : 0;
   depthRead.textContent = 'v' + PATCHES[Math.min(PATCHES.length-1, Math.max(0, Math.round(t*(PATCHES.length-1))))].v;
   gaugeFill.style.height = (t*100) + '%';
-  seaTint = 0.14 + t*0.22;
   // active section = last section whose top passed the viewport third
   let idx = 0;
-  zoneEls.forEach((el,i)=>{
+  ZONES.forEach((z,i)=>{
+    const el = document.getElementById(z.sec);
     if(el && el.offsetTop <= scroller.scrollTop + scroller.clientHeight/3) idx = i;
   });
   zoneLabel.textContent = ZONES[idx].label;
-  gaugeDotBtns.forEach((b,i)=>b.classList.toggle('on', i===idx));
-  navBtns.forEach(b=>b.classList.toggle('on', b.dataset.go===ZONES[Math.min(idx,5)].sec));
-  scrollTick = false;
-}
-scroller.addEventListener('scroll', ()=>{
-  if(!scrollTick){ scrollTick = true; requestAnimationFrame(onScroll); }
+  document.querySelectorAll('#gauge-dots button').forEach((b,i)=>b.classList.toggle('on', i===idx));
+  document.querySelectorAll('#navlinks button').forEach(b=>b.classList.toggle('on', b.dataset.go===ZONES[Math.min(idx,5)].sec));
 });
 
 /* ---------- BGM: looping audio track ---------- */
 const bgmBtn = document.getElementById('bgm');
 const bgmAudio = document.getElementById('bgm-audio');
-if(!bgmAudio.getAttribute('src')) bgmBtn.style.display = 'none';
 const BGM_VOL = 0.4;               // target volume (0–1)
 let bgmFade = null;
 function fadeTo(target, done){
