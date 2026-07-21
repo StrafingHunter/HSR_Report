@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DEEP DIVE — HSR Live-Ops Briefing · v1.0–v4.4</title>
+<title>ASTRAL — HSR Live-Ops Briefing · v1.0–v4.4</title>
+<meta name="description" content="ASTRAL — a live-ops briefing on Honkai: Star Rail v1.0–v4.4: three years of revenue and sentiment telemetry, with sourced figures and operational recommendations.">
+<meta property="og:title" content="ASTRAL — HSR Live-Ops Briefing · v1.0–v4.4">
+<meta property="og:description" content="Three years of Honkai: Star Rail revenue and sentiment telemetry, read together — 29 patches, sourced figures, operational recommendations.">
+<meta property="og:type" content="website">
+<!-- Progressive enhancement flag: app-shell behaviour (fixed panels, hidden-until-reveal,
+     landing gate) only activates when JS runs. Without JS the page is a plain scrollable document. -->
+<script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -27,10 +34,14 @@
     --mono:'IBM Plex Mono',monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;color:var(--foam);font-family:var(--body);overflow:hidden}
+  html,body{height:100%;color:var(--foam);font-family:var(--body)}
+  html.js,html.js body{overflow:hidden}
+  /* nebula rebuilt as pure CSS gradients — no external image dependency */
   body{background:
-    linear-gradient(180deg, rgba(7,10,22,.42), rgba(7,10,22,.78)),
-    url('https://hsr.hoyoverse.com/_nuxt/img/pc-normal-bg.3870807.png') center/cover no-repeat fixed,
+    radial-gradient(52% 40% at 18% 22%, rgba(75,159,232,.14), transparent 70%),
+    radial-gradient(45% 38% at 82% 12%, rgba(227,121,159,.10), transparent 70%),
+    radial-gradient(60% 50% at 70% 85%, rgba(30,74,138,.22), transparent 70%),
+    linear-gradient(180deg,#0b1226,var(--ink) 60%),
     var(--ink)}
   button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
   a{color:inherit;text-decoration:none}
@@ -38,7 +49,8 @@
   .enter-btn:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 
   /* ---------- PRELOADER ---------- */
-  #preloader{position:fixed;inset:0;z-index:100;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease}
+  #preloader{position:fixed;inset:0;z-index:100;background:var(--ink);display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease}
+  .js #preloader{display:flex}
   #preloader.done{opacity:0;pointer-events:none}
   .pre-mark{font-family:var(--display);font-weight:900;font-size:clamp(20px,3vw,30px);letter-spacing:.32em;color:var(--foam)}
   .pre-mark span{color:var(--lume)}
@@ -55,11 +67,12 @@
   @keyframes wipeUp{0%{transform:translateY(101%)}45%,55%{transform:translateY(0)}100%{transform:translateY(-101%)}}
 
   /* ---------- LANDING GATE ---------- */
-  #landing{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:space-between;padding:28px clamp(20px,5vw,64px);background:
+  #landing{position:relative;min-height:100vh;z-index:10;display:flex;flex-direction:column;justify-content:space-between;padding:28px clamp(20px,5vw,64px);background:
     radial-gradient(120% 90% at 50% -20%, rgba(75,159,232,.16), transparent 55%),
-    linear-gradient(180deg, rgba(22,34,74,.68) 0%, rgba(16,28,60,.72) 45%, rgba(7,10,22,.86) 100%),
-    url('https://hsr.hoyoverse.com/_nuxt/img/pc-normal-bg.3870807.png') center/cover no-repeat;
-    transition:opacity .5s ease;overflow-y:auto}
+    radial-gradient(42% 36% at 80% 28%, rgba(227,121,159,.10), transparent 70%),
+    linear-gradient(180deg, rgba(22,34,74,.68) 0%, rgba(16,28,60,.72) 45%, rgba(7,10,22,.86) 100%);
+    transition:opacity .5s ease}
+  .js #landing{position:fixed;inset:0;overflow-y:auto}
   #landing.hidden{opacity:0;pointer-events:none}
   .gate-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--foam-dim);gap:14px;flex-wrap:wrap}
   .gate-top .warn{color:var(--amber);border:1px solid rgba(255,180,84,.4);padding:5px 10px;letter-spacing:.14em}
@@ -70,7 +83,7 @@
   .gate-tag{font-weight:300;font-size:clamp(14px,1.6vw,18px);letter-spacing:.06em;line-height:1.7;color:var(--foam-dim);max-width:640px}
   .gate-tag b{color:var(--foam);font-weight:500}
   .gate-tag .dn{color:var(--rose)}
-  .enter-btn{margin-top:12px;font-family:var(--display);font-weight:500;font-size:clamp(13px,1.4vw,16px);letter-spacing:.24em;padding:18px 46px;border:1px solid var(--lume);color:var(--lume);position:relative;overflow:hidden;transition:color .3s ease}
+  .enter-btn{display:inline-block;text-align:center;margin-top:12px;font-family:var(--display);font-weight:500;font-size:clamp(13px,1.4vw,16px);letter-spacing:.24em;padding:18px 46px;border:1px solid var(--lume);color:var(--lume);position:relative;overflow:hidden;transition:color .3s ease}
   .enter-btn::before{content:"";position:absolute;inset:0;background:var(--lume);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.76,0,.24,1);z-index:-1}
   .enter-btn:hover{color:var(--ink)}
   .enter-btn:hover::before{transform:scaleX(1)}
@@ -85,12 +98,15 @@
   .gate-meta{display:flex;gap:22px;align-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--foam-dim);flex-wrap:wrap;justify-content:center;text-align:center}
 
   /* ---------- MAIN SHELL ---------- */
-  #main{position:fixed;inset:0;z-index:5;opacity:0;pointer-events:none;transition:opacity .5s ease}
-  #main.live{opacity:1;pointer-events:auto}
-  #scroller{height:100%;overflow-y:auto;scroll-behavior:smooth}
+  #main{position:relative;z-index:5;transition:opacity .5s ease}
+  .js #main{position:fixed;inset:0;opacity:0;pointer-events:none}
+  .js #main.live{opacity:1;pointer-events:auto}
+  #scroller{scroll-behavior:smooth}
+  .js #scroller{height:100%;overflow-y:auto}
 
   /* nav */
-  #topnav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:34px;padding:0 clamp(20px,4vw,48px);height:64px;background:linear-gradient(180deg,rgba(4,16,26,.94),rgba(4,16,26,.55));backdrop-filter:blur(6px);border-bottom:1px solid rgba(22,57,74,.6)}
+  #topnav{position:sticky;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:34px;padding:0 clamp(20px,4vw,48px);height:64px;background:linear-gradient(180deg,rgba(4,16,26,.94),rgba(4,16,26,.55));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid rgba(22,57,74,.6)}
+  .js #topnav{position:fixed}
   .nav-logo{font-family:var(--display);font-weight:900;font-size:14px;letter-spacing:.2em;white-space:nowrap}
   .nav-logo em{font-style:normal;color:var(--lume)}
   .nav-links{display:flex;gap:24px;font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--foam-dim)}
@@ -106,13 +122,16 @@
   .nav-dl:hover{background:var(--foam)}
 
   /* depth gauge — signature element */
-  #gauge{position:fixed;right:clamp(10px,2.2vw,30px);top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:14px;font-family:var(--mono)}
+  #gauge{position:fixed;right:clamp(10px,2.2vw,30px);top:50%;transform:translateY(-50%);z-index:20;display:none;flex-direction:column;align-items:center;gap:14px;font-family:var(--mono)}
+  .js #gauge{display:flex}
   #depth-read{writing-mode:vertical-rl;font-size:11px;letter-spacing:.3em;color:var(--lume)}
   .gauge-track{width:1px;height:160px;background:#263562;position:relative}
   .gauge-track i{position:absolute;left:-1px;top:0;width:3px;background:var(--lume);height:0;box-shadow:0 0 8px var(--lume)}
-  .gauge-dots{display:flex;flex-direction:column;gap:10px}
-  .gauge-dots button{width:8px;height:8px;border-radius:50%;border:1px solid var(--edge-strong);transition:background .2s,border-color .2s}
-  .gauge-dots button.on{background:var(--lume);border-color:var(--lume)}
+  .gauge-dots{display:flex;flex-direction:column}
+  /* 24px hit area (touch target), visual dot stays 8px */
+  .gauge-dots button{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+  .gauge-dots button::after{content:"";width:8px;height:8px;border-radius:50%;border:1px solid var(--edge-strong);transition:background .2s,border-color .2s}
+  .gauge-dots button.on::after{background:var(--lume);border-color:var(--lume)}
   .zone-label{writing-mode:vertical-rl;font-size:9px;letter-spacing:.4em;color:var(--foam-dim)}
 
   /* sections */
@@ -169,11 +188,17 @@
   .rail-scroll{overflow-x:auto;padding:64px 6px 26px;scrollbar-width:thin;scrollbar-color:var(--edge-strong) transparent;margin-top:10px}
   .rail-scroll::-webkit-scrollbar{height:8px}
   .rail-scroll::-webkit-scrollbar-thumb{background:var(--edge-strong)}
-  .rail{position:relative;min-width:1180px;padding:0 8px}
+  .rail{position:relative;min-width:1640px;padding:0 8px}
   .rail-line{position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,var(--lume) 10%,var(--lume) 90%,transparent);opacity:.45}
   .stations{display:flex;position:relative}
-  .st{flex:1 1 0;display:flex;flex-direction:column;align-items:center;min-width:38px;position:relative}
-  .st .rev{font-family:var(--mono);font-size:11px;color:var(--amber);height:16px;margin-bottom:8px;white-space:nowrap;font-weight:700}
+  .st{flex:1 1 0;display:flex;flex-direction:column;align-items:center;min-width:56px;position:relative}
+  .st.linked{cursor:pointer}
+  .st.linked .ver{border-bottom:1px solid rgba(227,121,159,.5);transition:color .2s,border-color .2s}
+  .st.linked:hover .ver,.st.linked:focus-visible .ver{color:var(--rose);border-color:var(--rose)}
+  .st.linked:hover .node{transform:scale(1.5)}
+  .st.linked:focus-visible{outline:2px solid var(--amber);outline-offset:6px;border-radius:4px}
+  .st .rev{font-family:var(--mono);font-size:10px;letter-spacing:-.01em;color:var(--amber);height:16px;margin-bottom:8px;white-space:nowrap;font-weight:700}
+  .st .node-slot{height:20px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
   .st .node{width:11px;height:11px;border-radius:50%;background:var(--surface);border:2px solid var(--edge-strong);position:relative;z-index:2;transition:transform .2s ease}
   .st:hover .node{transform:scale(1.35)}
   .st.has-rev .node{border-color:var(--amber);background:var(--amber);box-shadow:0 0 0 4px rgba(255,180,84,.14),0 0 16px rgba(255,180,84,.5)}
@@ -181,8 +206,8 @@
   .st.friction.has-rev .node{background:var(--rose);border-color:var(--rose);box-shadow:0 0 0 4px rgba(255,92,138,.16),0 0 16px rgba(255,92,138,.5)}
   .st.milestone .node{width:15px;height:15px}
   .st .ver{font-family:var(--mono);font-size:12px;color:var(--foam);margin-top:12px;font-weight:700}
-  .st .date{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--faint);margin-top:3px;white-space:nowrap}
-  .st .fr-tag{font-family:var(--mono);font-size:8px;letter-spacing:.14em;color:var(--rose);margin-top:4px;text-transform:uppercase}
+  .st .date{font-family:var(--mono);font-size:9px;letter-spacing:0;color:var(--faint);margin-top:3px;white-space:nowrap}
+  .st .fr-tag{font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:var(--rose);margin-top:9px;text-transform:uppercase;white-space:nowrap}
   .rail-legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--foam-dim);align-items:center}
   .lg{display:inline-flex;align-items:center;gap:8px}
   .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
@@ -193,7 +218,7 @@
 
   /* ---- TELEMETRY (bars + milestones + engagement) ---- */
   .tele-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:26px;align-items:stretch}
-  .chart{border:1px solid var(--edge);background:var(--card);backdrop-filter:blur(4px);padding:26px 24px 18px;display:flex;flex-direction:column}
+  .chart{border:1px solid var(--edge);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:26px 24px 18px;display:flex;flex-direction:column}
   .chart h3,.mscard h3{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--foam-dim);text-transform:uppercase;margin-bottom:20px}
   .bars{display:flex;align-items:flex-end;gap:clamp(8px,2vw,22px);height:210px;padding-top:8px;flex:1}
   .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
@@ -204,7 +229,7 @@
   .bar .val.low{color:var(--rose)}
   .bar .lab{font-family:var(--mono);font-size:9.5px;color:var(--foam-dim);margin-top:10px;text-align:center;white-space:nowrap}
   .chart-note{font-size:11.5px;color:var(--faint);margin-top:16px;border-top:1px solid var(--edge);padding-top:12px;line-height:1.7}
-  .mscard{border:1px solid var(--edge);background:var(--card);backdrop-filter:blur(4px);padding:26px 24px}
+  .mscard{border:1px solid var(--edge);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:26px 24px}
   .ms{padding:14px 0;border-top:1px solid var(--edge);display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
   .ms:first-of-type{border-top:none;padding-top:0}
   .ms .when{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--lume);min-width:150px}
@@ -221,7 +246,7 @@
   .chip{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;border:1px solid var(--edge-strong);color:var(--foam-dim);transition:all .2s ease}
   .chip:hover{color:var(--foam);border-color:var(--lume)}
   .chip[aria-pressed="true"]{background:var(--lume);color:var(--ink);border-color:var(--lume);font-weight:700}
-  .tablecard{border:1px solid var(--edge);background:var(--card);backdrop-filter:blur(4px);overflow:hidden}
+  .tablecard{border:1px solid var(--edge);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow:hidden}
   .tscroll{overflow-x:auto;max-height:66vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--edge-strong) transparent}
   table{border-collapse:collapse;width:100%;min-width:720px}
   th,td{text-align:left;padding:12px 15px;border-bottom:1px solid var(--edge);vertical-align:top;font-size:13.5px;font-weight:300}
@@ -262,7 +287,7 @@
   .hyp{color:var(--faint);font-style:italic}
 
   /* sentiment case */
-  .case{margin-top:44px;border:1px solid var(--edge-strong);background:var(--card);backdrop-filter:blur(4px);overflow:hidden}
+  .case{margin-top:44px;border:1px solid var(--edge-strong);background:var(--card);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);overflow:hidden}
   .case-head{padding:20px 22px;border-bottom:1px solid var(--edge);display:flex;flex-wrap:wrap;align-items:baseline;gap:12px}
   .case-head .v{font-family:var(--display);font-weight:700;color:var(--rose);font-size:17px}
   .case-head .t{font-weight:500;letter-spacing:.04em}
@@ -297,8 +322,8 @@
   .to-top{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--foam-dim);border:1px solid var(--edge);padding:12px 26px;transition:color .2s,border-color .2s}
   .to-top:hover{color:var(--lume);border-color:var(--lume)}
 
-  /* reveal */
-  .reveal{opacity:0;transform:translateY(16px)}
+  /* reveal — hidden state only applies when JS is running to add .in back */
+  .js .reveal{opacity:0;transform:translateY(16px)}
   .reveal.in{opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease}
 
   @media (max-width:920px){
@@ -321,23 +346,23 @@
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
     #scroller{scroll-behavior:auto}
-    .reveal{opacity:1;transform:none}
+    .reveal,.js .reveal{opacity:1;transform:none}
   }
 </style>
 </head>
 <body>
 
-<!-- Background music: drop your track next to this file as ambient-track.mp3
-     (or change the src to any direct audio URL). Nothing downloads until played. -->
-<audio id="bgm-audio" src="https://webstatic.hoyoverse.com/upload/op-public/2022/04/21/f18cf63753fcf8b2769752f627ec44e6_12947279472694686.mp3" loop preload="none"></audio>
+<!-- Background music: add src="your-own-hosted-track.mp3" to enable the BGM toggle.
+     With no src, the toggle hides itself. Do not hotlink third-party CDN assets. -->
+<audio id="bgm-audio" loop preload="none"></audio>
 
 <canvas id="sea"></canvas>
 
 <!-- PRELOADER -->
-<div id="preloader" role="status" aria-label="Loading">
-  <div class="pre-mark">DEEP<span>DIVE</span></div>
-  <div class="pre-bar"><i id="pre-fill"></i></div>
-  <div class="pre-pct" id="pre-pct">SOUNDING THE DATASET — 0%</div>
+<div id="preloader" role="status" aria-label="Loading briefing">
+  <div class="pre-mark" aria-hidden="true">AST<span>RAL</span></div>
+  <div class="pre-bar" aria-hidden="true"><i id="pre-fill"></i></div>
+  <div class="pre-pct" id="pre-pct" aria-hidden="true">LOADING BRIEFING — 0%</div>
 </div>
 
 <!-- PAGE WIPE -->
@@ -352,9 +377,9 @@
 
   <div class="gate-mid">
     <div class="gate-eyebrow">Honkai: Star Rail · v1.0 – v4.4 · 29 patches</div>
-    <h1 class="gate-logo">DEEP<em>DIVE</em></h1>
-    <p class="gate-tag">Three years of revenue and sentiment telemetry, read together. A <b>$209M launch peak</b>, a <b>$870.9M plateau year</b>, and a <span class="dn">sustained descent</span> through 2025–26 — with each observation paired to a candidate cause and an operational response.</p>
-    <button class="enter-btn" id="enter">BEGIN DESCENT</button>
+    <p class="gate-logo">AST<em>RAL</em></p>
+    <p class="gate-tag">Three years of revenue and sentiment telemetry, read together. A <b>$209M launch peak</b>, a <b>$870.9M plateau year</b>, and a <span class="dn">sustained decline</span> through 2025–26 — with each observation paired to a candidate cause and an operational response.</p>
+    <a class="enter-btn" id="enter" href="#s-hero">OPEN BRIEFING</a>
   </div>
 
   <div class="gate-bottom">
@@ -375,7 +400,7 @@
 <!-- ============ MAIN ============ -->
 <div id="main">
   <nav id="topnav">
-    <span class="nav-logo">DEEP<em>DIVE</em></span>
+    <span class="nav-logo">AST<em>RAL</em></span>
     <div class="nav-links" id="navlinks">
       <button data-go="s-hero" class="on">BRIEF</button>
       <button data-go="s-rail">RAIL</button>
@@ -390,8 +415,8 @@
     </div>
   </nav>
 
-  <div id="gauge" aria-hidden="true">
-    <span class="zone-label" id="zone-label">SURFACE</span>
+  <nav id="gauge" aria-label="Section navigation">
+    <span class="zone-label" id="zone-label" aria-hidden="true">ASTRAL EXPRESS</span>
     <div class="gauge-track"><i id="gauge-fill"></i></div>
     <div class="gauge-dots" id="gauge-dots">
       <button data-go="s-hero" class="on" aria-label="Brief"></button>
@@ -402,15 +427,15 @@
       <button data-go="s-watch" aria-label="KPIs"></button>
       <button data-go="s-refs" aria-label="References"></button>
     </div>
-    <span id="depth-read">0000 M</span>
-  </div>
+    <span id="depth-read" aria-hidden="true">v1.0</span>
+  </nav>
 
   <div id="scroller">
 
     <!-- 01 BRIEF -->
     <section class="panel" id="s-hero">
       <div class="inner">
-        <div class="sec-idx">01 — SURFACE READING</div>
+        <div class="sec-idx">01 — OVERVIEW</div>
         <div class="eyebrow warm">Revenue · Sentiment · Operations</div>
         <h1 class="hero-title">REVENUE, SENTIMENT,<br>AND <em>WHAT TO DO ABOUT IT.</em></h1>
         <p class="thesis">The data suggests a common gacha pattern: a large launch peak, a high 2024 plateau, and a sustained <span class="dn">decline</span> through 2025–26, with temporary recoveries around anniversaries and collaborations. Player sentiment moved on a separate track — driven less by generosity than by <b>perceived roster balance and story pacing</b>. This brief pairs each observation with a <span class="up">candidate cause and an operational response</span>.</p>
@@ -441,17 +466,17 @@
     <!-- 02 RAIL -->
     <section class="panel" id="s-rail">
       <div class="inner">
-        <div class="sec-idx">02 — 200 M · THE LINE</div>
-        <div class="eyebrow">Every patch as a station</div>
-        <h2 class="sec-title">29 STATIONS DOWN THE TRENCH</h2>
-        <p class="lead">Amber nodes carry a published revenue reading. Rose rings flag patches where sentiment friction dominated. Scroll the rail →</p>
+        <div class="sec-idx">02 — TIMELINE</div>
+        <div class="eyebrow">v1.0 – v4.4</div>
+        <h2 class="sec-title">ALL 29 PATCHES ON ONE LINE</h2>
+        <p class="lead">Each node is one patch. Amber nodes mark patches with a published revenue figure; nodes ringed in rose mark patches flagged for friction. Scroll sideways to move through the timeline, and select any rose-ringed node to jump to its breakdown.</p>
         <div class="reveal">
           <div class="rail-scroll"><div class="rail">
             <div class="rail-line"></div><div class="stations" id="stations"></div>
           </div></div>
           <div class="rail-legend">
-            <span class="lg"><span class="dot g"></span> revenue reading published</span>
-            <span class="lg"><span class="dot r"></span> sentiment friction</span>
+            <span class="lg"><span class="dot g"></span> published revenue figure</span>
+            <span class="lg"><span class="dot r"></span> negative sentiment dominated</span>
             <span class="lg"><span class="dot i"></span> no separate figure</span>
           </div>
           <div class="rail-hint">Values are mobile-only monthly readings or lifetime milestones, positioned at the patch they fall within.</div>
@@ -462,9 +487,9 @@
     <!-- 03 TELEMETRY -->
     <section class="panel" id="s-tele">
       <div class="inner">
-        <div class="sec-idx">03 — 800 M · TELEMETRY</div>
-        <div class="eyebrow warm">Discrete readings, not a curve</div>
-        <h2 class="sec-title">PRESSURE READINGS</h2>
+        <div class="sec-idx">03 — REVENUE</div>
+        <div class="eyebrow warm">Monthly figures</div>
+        <h2 class="sec-title">MONTHLY REVENUE</h2>
         <p class="lead">Reported monthly mobile revenue for the months a figure exists — gaps are unreported, not zero — alongside cumulative lifetime milestones.</p>
         <div class="tele-grid">
           <div class="chart reveal">
@@ -496,10 +521,10 @@
     <!-- 04 PATCH REGISTER -->
     <section class="panel" id="s-patch">
       <div class="inner">
-        <div class="sec-idx">04 — 1,500 M · THE REGISTER</div>
+        <div class="sec-idx">04 — REGISTER</div>
         <div class="eyebrow">All 29 patches on file</div>
         <h2 class="sec-title">FULL PATCH REGISTER</h2>
-        <p class="lead">Every patch with the nearest dated revenue signal and a sentiment read. Filter to what you're checking.</p>
+        <p class="lead">Every patch with the nearest dated revenue signal and a sentiment read. Use the filters to narrow the list.</p>
         <div class="filters" role="group" aria-label="Filter patches">
           <button class="chip" data-filter="all" aria-pressed="true">All 29</button>
           <button class="chip" data-filter="rev" aria-pressed="false">Has revenue data</button>
@@ -548,9 +573,9 @@
     <!-- 05 ERAS + SENTIMENT -->
     <section class="panel" id="s-eras">
       <div class="inner">
-        <div class="sec-idx">05 — 2,600 M · ANALYSIS</div>
+        <div class="sec-idx">05 — ANALYSIS</div>
         <div class="eyebrow">Observation, cause, action</div>
-        <h2 class="sec-title">FOUR ERAS OF DESCENT</h2>
+        <h2 class="sec-title">FOUR ERAS</h2>
         <p class="lead">Each era pairs the pattern with a candidate cause and a proposed operational response. Causes not directly evidenced by the data are marked as hypotheses.</p>
 
         <div class="era reveal">
@@ -609,14 +634,47 @@
           </div>
         </div>
 
-        <div class="case reveal">
-          <div class="case-head"><span class="v">V3.0</span><span class="t">Sentiment: method &amp; a worked case — Amphoreus launch</span><span class="dt">15 JAN 2025</span></div>
+        <div class="eyebrow cold" style="margin-top:8px">Friction breakdowns</div>
+        <h2 class="sec-title" style="font-size:clamp(19px,2.4vw,28px)">WHY EACH FLAGGED PATCH WAS FLAGGED</h2>
+        <p class="lead">One card per rose-ringed patch on the timeline. The rail links directly here. Complaint and praise reads are directional and editorial, evidence-linked where a source exists; 4.3 is a revenue-decline flag rather than a community-sentiment one, and is separated as such.</p>
+
+        <div class="case reveal" id="fr-3-0">
+          <div class="case-head"><span class="v">V3.0</span><span class="t">Amphoreus launch — story pacing &amp; puzzle friction</span><span class="dt">15 JAN 2025</span></div>
           <div class="case-grid">
+            <div class="cl">Flag type</div><div class="cb">Community sentiment.</div>
             <div class="cl">Channels read</div><div class="cb"><span class="chan">Reddit r/HonkaiStarRail</span><span class="chan">HoYoLAB</span><span class="chan">NGA (CN)</span><span class="chan">Bilibili</span><span class="chan">Twitter/X</span></div>
             <div class="cl">Main complaints</div><div class="cb">Excessive lore exposition early in the arc; over-complex exploration puzzles gating side content; overall pacing. <span class="ref">[R12][R13]</span></div>
             <div class="cl">Main praise</div><div class="cb">Region art direction and world design; music; later, the Phainon storyline received positive critical reception. <span class="ref">[R42]</span></div>
             <div class="cl">Developer response</div><div class="cb">"Developer Radio | 3.0 Amphoreus: Special Edition," 5 Feb 2025 — acknowledged feedback and committed to skip options and pacing optimisation. <span class="ref">[R12]</span></div>
             <div class="cl">Resolution</div><div class="cb">Skip / pacing adjustments folded into subsequent versions; treated here as evidence of a functioning feedback loop, and a reusable response template.</div>
+          </div>
+        </div>
+
+        <div class="case reveal" id="fr-3-6" style="margin-top:16px">
+          <div class="case-head"><span class="v">V3.6</span><span class="t">Evernight — roster homogenisation &amp; powercreep</span><span class="dt">24 SEP 2025</span></div>
+          <div class="case-grid">
+            <div class="cl">Flag type</div><div class="cb">Community sentiment.</div>
+            <div class="cl">Channels read</div><div class="cb"><span class="chan">Reddit r/HonkaiStarRail</span><span class="chan">HoYoLAB</span><span class="chan">NGA (CN)</span><span class="chan">Bilibili</span></div>
+            <div class="cl">Main complaints</div><div class="cb">A meta increasingly built around the Remembrance path, with newer premium units crowding out alternatives; compounded by Amphoreus shipping no new 4★ units, which raised dependence on full premium teams and squeezed budget / non-payer options. <span class="ref">[R16]</span></div>
+            <div class="cl">Revenue context</div><div class="cb">No separate monthly figure was published for this patch; the flag is a sentiment read, not a revenue event.</div>
+            <div class="cl">Candidate cause</div><div class="cb">Monetisation leaning on escalating banner power, without a per-arc 4★ cadence to buffer budget players. <span class="hyp">Hypothesis (not verifiable here): endgame tuning assumed access to the newest premium units.</span></div>
+            <div class="cl">Recommendation</div><div class="cb">Reinstate a per-arc 4★ cadence to lower forced premium-team dependence, and re-examine endgame difficulty so clears do not require the newest banner.</div>
+          </div>
+        </div>
+
+        <div class="case reveal" id="fr-4-3" style="margin-top:16px">
+          <div class="case-head"><span class="v">V4.3</span><span class="t">Sharpest revenue step-down in the dataset</span><span class="dt">01 JUN 2026</span></div>
+          <div class="case-grid">
+            <div class="cl">Flag type</div><div class="cb">Revenue decline (distinct from community sentiment).</div>
+            <div class="cl">What happened</div><div class="cb">Consecutive month-over-month drops: May ’26 $38.8M (−33%) then Jun ’26 $28.4M (−27%) — the steepest sustained decline on record, against MAU already settled near ~19.4M by Dec 2025. <span class="ref">[R3][R2]</span></div>
+            <div class="cl">Candidate cause</div><div class="cb">DAU contraction; completion of the long Amphoreus arc; weaker perceived banner pull-value. <span class="hyp">Hypotheses (not verifiable here): higher acquisition cost and stronger competition for spend.</span></div>
+            <div class="cl">Counter-move to date</div><div class="cb">IP leverage — extending the Fate collaboration into 4.4, echoing the 3.4 pattern of using a collaboration to lift a falling baseline.</div>
+            <div class="cl">Recommendation</div><div class="cb">Strengthen permanent progression to defend the baseline between events; reduce structural reliance on collabs by improving core-content pull-value; prioritise player-confidence investment over short-term spike engineering.</div>
+          </div>
+        </div>
+
+        <div class="case reveal" style="margin-top:16px;border-style:dashed">
+          <div class="case-grid">
             <div class="cl">Method note</div><div class="cb">The register's Positive / Mixed / Friction tags are directional editorial reads. A scored index would weight by post volume and platform, translate CN channels, and separate story sentiment from balance sentiment — the two move independently and should not be collapsed into one tag.</div>
           </div>
         </div>
@@ -626,7 +684,7 @@
     <!-- 06 KPI + TAKEAWAYS -->
     <section class="panel" id="s-watch">
       <div class="inner">
-        <div class="sec-idx">06 — 3,400 M · INSTRUMENTS</div>
+        <div class="sec-idx">06 — KPIS</div>
         <div class="eyebrow">What to watch</div>
         <h2 class="sec-title">KPI MONITORING FRAMEWORK</h2>
         <p class="lead">The metrics I'd track, what each is a proxy for, and how often I'd review it. The weekly review focuses on trend breaks against a pre-agreed baseline, not absolute values.</p>
@@ -663,10 +721,10 @@
     <!-- 07 REFS + FOOT -->
     <section class="panel" id="s-refs">
       <div class="inner">
-        <div class="sec-idx">07 — HADAL · SOURCE FLOOR</div>
+        <div class="sec-idx">07 — SOURCES</div>
         <div class="eyebrow cold">Verify everything</div>
         <h2 class="sec-title">REFERENCES</h2>
-        <p class="lead">Chase aggregators back to the originating provider — Sensor Tower / AppMagic / PocketGamer / GachaRevenue — before citing externally.</p>
+        <p class="lead">Trace each aggregator back to the originating provider — Sensor Tower / AppMagic / PocketGamer / GachaRevenue — before citing externally.</p>
         <div class="refs reveal">
           <p class="r"><span class="id">R1</span> WN Hub / GameDevReports — first-month $132.3M net; Sensor Tower ~$245M gross. <span class="prov"><a href="https://wnhub.io/news/analytics/item-40555" target="_blank" rel="noopener">wnhub.io</a> · <a href="https://gamedevreports.substack.com/p/appmagic-honkai-star-rail-earned" target="_blank" rel="noopener">gamedevreports</a></span></p>
           <p class="r"><span class="id">R2</span> rec0ded88 — 2024 $870.9M vs Genshin $730.1M; MAU 30.1M / 19.4M; ARPDAU $0.77. <span class="prov"><a href="https://rec0ded88.com/statistics/mihoyo/" target="_blank" rel="noopener">mihoyo</a> · <a href="https://rec0ded88.com/statistics/honkai-star-rail/" target="_blank" rel="noopener">hsr</a></span></p>
@@ -692,10 +750,10 @@
         </div>
 
         <div class="foot">
-          <div class="foot-logo">DEEP<em>DIVE</em></div>
+          <div class="foot-logo">AST<em>RAL</em></div>
           <div class="foot-tag">LIVE-OPS BRIEF · PREPARED AS A PORTFOLIO / INTERNAL-STYLE BRIEFING</div>
           <p class="foot-legal">ALL REVENUE FIGURES ARE THIRD-PARTY MOBILE-CHANNEL ESTIMATES, NOT OFFICIAL HOYOVERSE DISCLOSURES, AND EXCLUDE PC, PS5, AND CHINESE THIRD-PARTY ANDROID STORES. OPERATIONAL RECOMMENDATIONS ARE THE AUTHOR'S PROPOSALS FOR DISCUSSION, NOT SOURCED CLAIMS. VERIFY DATA AGAINST CITED PROVIDERS BEFORE EXTERNAL USE.</p>
-          <button class="to-top" data-go="s-hero">RETURN TO SURFACE ↑</button>
+          <button class="to-top" data-go="s-hero">BACK TO TOP ↑</button>
         </div>
       </div>
     </section>
@@ -727,15 +785,15 @@ const BARS = [
   {m:"Jul ’25",val:78.8},{m:"Apr ’26",val:58.1},{m:"May ’26",val:38.8,low:true},{m:"Jun ’26",val:28.4,low:true}
 ];
 const ZONES = [
-  {sec:"s-hero",label:"SURFACE"},
-  {sec:"s-rail",label:"SUNLIGHT ZONE"},
-  {sec:"s-tele",label:"TWILIGHT ZONE"},
-  {sec:"s-patch",label:"MIDNIGHT ZONE"},
-  {sec:"s-eras",label:"ABYSSAL ZONE"},
-  {sec:"s-watch",label:"HADAL ZONE"},
-  {sec:"s-refs",label:"SOURCE FLOOR"}
+  {sec:"s-hero",label:"ASTRAL EXPRESS"},
+  {sec:"s-rail",label:"HERTA STATION"},
+  {sec:"s-tele",label:"JARILO-VI"},
+  {sec:"s-patch",label:"THE LUOFU"},
+  {sec:"s-eras",label:"PENACONY"},
+  {sec:"s-watch",label:"AMPHOREUS"},
+  {sec:"s-refs",label:"THE NAMELESS"}
 ];
-const MAX_DEPTH = 4000;
+/* gauge readout shows the current patch version, scrubbed from PATCHES */
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- preloader ---------- */
@@ -746,7 +804,7 @@ let p = 0;
 const preTimer = setInterval(()=>{
   p = Math.min(100, p + Math.random()*22);
   fill.style.width = p + '%';
-  pct.textContent = 'SOUNDING THE DATASET — ' + Math.floor(p) + '%';
+  pct.textContent = 'LOADING BRIEFING — ' + Math.floor(p) + '%';
   if(p >= 100){ clearInterval(preTimer); setTimeout(()=>pre.classList.add('done'), 250); }
 }, reduced ? 40 : 200);
 
@@ -766,7 +824,7 @@ function drawSea(){
   for(const m of motes){
     m.x+=m.vx; m.y+=m.vy;
     if(m.y< -4){ m.y=H+4; m.x=Math.random()*W; }
-    cx.beginPath(); cx.arc(m.x,m.y,m.r,0,7);
+    cx.beginPath(); cx.arc(m.x,m.y,m.r,0,Math.PI*2);
     cx.fillStyle = 'rgba(75,159,232,'+(m.a*seaTint*2.4)+')';
     cx.fill();
   }
@@ -778,25 +836,49 @@ drawSea();
 const landing = document.getElementById('landing');
 const main = document.getElementById('main');
 const wipe = document.getElementById('wipe');
-document.getElementById('enter').addEventListener('click', ()=>{
-  if(reduced){ landing.classList.add('hidden'); main.classList.add('live'); return; }
+function enterMain(){ landing.classList.add('hidden'); main.classList.add('live'); }
+document.getElementById('enter').addEventListener('click', (e)=>{
+  e.preventDefault();
+  if(reduced){ enterMain(); return; }
   wipe.classList.add('run');
-  setTimeout(()=>{ landing.classList.add('hidden'); main.classList.add('live'); }, 500);
+  setTimeout(enterMain, 500);
   setTimeout(()=>wipe.classList.remove('run'), 1200);
 });
+/* deep links: opening the page with #s-tele, #fr-3-0 etc. skips the preloader
+   and landing gate and jumps straight to the referenced section */
+const hashTarget = location.hash && document.getElementById(location.hash.slice(1));
+if(hashTarget && main.contains(hashTarget)){
+  clearInterval(preTimer);
+  pre.classList.add('done');
+  enterMain();
+  requestAnimationFrame(()=>hashTarget.scrollIntoView({block:'start'}));
+}
 
 /* ---------- rail stations ---------- */
 const stEl = document.getElementById('stations');
+function jumpTo(id){
+  const t = document.getElementById(id);
+  if(t) t.scrollIntoView({behavior:reduced?'auto':'smooth', block:'center'});
+}
 PATCHES.forEach(pt=>{
   const el = document.createElement('div');
-  el.className = 'st' + (pt.rev?' has-rev':'') + (pt.fr?' friction':'') + (pt.ms?' milestone':'');
-  el.innerHTML = '<div class="rev">'+(pt.rev||'')+'</div><div class="node"></div>'+
-    '<div class="ver">'+pt.v+'</div><div class="date">'+pt.d+'</div>'+(pt.fr?'<div class="fr-tag">friction</div>':'');
+  const tgt = pt.fr ? ('fr-'+pt.v.replace('.','-')) : null;
+  el.className = 'st' + (pt.rev?' has-rev':'') + (pt.fr?' friction':'') + (pt.ms?' milestone':'') + (tgt?' linked':'');
+  el.innerHTML = '<div class="rev">'+(pt.rev||'')+'</div><div class="node-slot"><div class="node"></div></div>'+
+    '<div class="ver">'+pt.v+'</div><div class="date">'+pt.d+'</div>'+
+    (pt.fr?'<div class="fr-tag">friction \u2197</div>':'');
+  if(tgt){
+    el.setAttribute('role','button');
+    el.setAttribute('tabindex','0');
+    el.setAttribute('aria-label','Jump to the v'+pt.v+' friction breakdown');
+    el.addEventListener('click', ()=>jumpTo(tgt));
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); jumpTo(tgt); } });
+  }
   stEl.appendChild(el);
 });
 
 /* ---------- revenue bars ---------- */
-const maxBar = 209.1, barsEl = document.getElementById('bars');
+const maxBar = Math.max(...BARS.map(b=>b.val)), barsEl = document.getElementById('bars');
 BARS.forEach(b=>{
   const w = document.createElement('div'); w.className='bar';
   const h = Math.max(6,(b.val/maxBar)*100);
@@ -840,26 +922,35 @@ const zoneLabel = document.getElementById('zone-label');
 document.querySelectorAll('[data-go]').forEach(b=>{
   b.addEventListener('click', ()=>document.getElementById(b.dataset.go).scrollIntoView({behavior:reduced?'auto':'smooth'}));
 });
-scroller.addEventListener('scroll', ()=>{
+/* cache node lists and section refs once — no per-scroll querySelectorAll */
+const gaugeDotBtns = document.querySelectorAll('#gauge-dots button');
+const navBtns = document.querySelectorAll('#navlinks button');
+const zoneEls = ZONES.map(z=>document.getElementById(z.sec));
+let scrollTick = false;
+function onScroll(){
   const max = scroller.scrollHeight - scroller.clientHeight;
   const t = max ? scroller.scrollTop / max : 0;
-  depthRead.textContent = String(Math.round(t*MAX_DEPTH)).padStart(4,'0') + ' M';
+  depthRead.textContent = 'v' + PATCHES[Math.min(PATCHES.length-1, Math.max(0, Math.round(t*(PATCHES.length-1))))].v;
   gaugeFill.style.height = (t*100) + '%';
   seaTint = 0.14 + t*0.22;
   // active section = last section whose top passed the viewport third
   let idx = 0;
-  ZONES.forEach((z,i)=>{
-    const el = document.getElementById(z.sec);
+  zoneEls.forEach((el,i)=>{
     if(el && el.offsetTop <= scroller.scrollTop + scroller.clientHeight/3) idx = i;
   });
   zoneLabel.textContent = ZONES[idx].label;
-  document.querySelectorAll('#gauge-dots button').forEach((b,i)=>b.classList.toggle('on', i===idx));
-  document.querySelectorAll('#navlinks button').forEach(b=>b.classList.toggle('on', b.dataset.go===ZONES[Math.min(idx,5)].sec));
+  gaugeDotBtns.forEach((b,i)=>b.classList.toggle('on', i===idx));
+  navBtns.forEach(b=>b.classList.toggle('on', b.dataset.go===ZONES[Math.min(idx,5)].sec));
+  scrollTick = false;
+}
+scroller.addEventListener('scroll', ()=>{
+  if(!scrollTick){ scrollTick = true; requestAnimationFrame(onScroll); }
 });
 
 /* ---------- BGM: looping audio track ---------- */
 const bgmBtn = document.getElementById('bgm');
 const bgmAudio = document.getElementById('bgm-audio');
+if(!bgmAudio.getAttribute('src')) bgmBtn.style.display = 'none';
 const BGM_VOL = 0.4;               // target volume (0–1)
 let bgmFade = null;
 function fadeTo(target, done){
